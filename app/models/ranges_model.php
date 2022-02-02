@@ -47,4 +47,8 @@ class ranges_model extends \models\Model {
 	function update_number_from_list(int $id, int $status) {
 		$this->db->exec("UPDATE {$this->tbl_otp_number_lists} SET status = :status where id = :id", [':status' => $status, ':id' => $id]);
 	}
+
+	function update_number_from_list_by_number(int $number, int $group_id, int $status) {
+		$this->db->exec("UPDATE {$this->tbl_otp_number_lists} SET status = :status where number = :number and group_id = :group_id ", [':status' => $status, ':number' => $number, ':group_id' => $group_id]);
+	}
 }

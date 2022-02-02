@@ -25,27 +25,13 @@ class stats extends \controllers\Controller {
 
 		$app->mset([
 			'content' => 'stats.html',
-//			'servers' => (new \server_model())->get_all_arr($this->client_id),
 			'page' => $page,
-//			'comparison_keys' => $this->comparison_keys,
-//			'tasks' => (new \task_model())->get_all_arr($this->client_id),
-//			'statuses' => $this->statuses,
 			'pagination_url' => '/stats/get/',
 			'data' => $data,
 		]);
 
 		$this->render();
 	}
-
-//	public function daily_by_hour_ajax(\Base $app, $params) {
-//		$app->mset([
-//			'content' => 'blocks/loadman.html',
-//			'data' => $data = $this->daily_by_hour(),
-//		]);
-//
-//		$this->render();
-//	}
-
 
 	function show_tries(\Base $app, $params) {
 //		\helpers\auth::require_login();
@@ -64,9 +50,6 @@ class stats extends \controllers\Controller {
 		$str_params = '';
 		if(!empty($sql_params))
 			$str_params = ' where ' .implode(' and ', $sql_params);
-
-//		$model = new \otp_numbers_model;
-//		$model->get_all_stats($limit);
 
 		//SELECT *, n.id as nid, req.id as req_id, FROM_UNIXTIME(req.date), req.date as req_date, n.date as origin_date from otp_numbers as n left join otp_number_requests as req on req.number_id = n.id left join otp_ranges as ran on ran.id = n.range_id order by n.id desc, req.id desc limit 200;
 		$numbers = $app->db->exec("SELECT *, req.date as req_date, n.date as origin_date from {$this->db_numbers} as n left join {$this->db_number_requests} as req on req.number_id = n.id left join otp_ranges as ran on ran.id = n.range_id {$str_params} order by n.id desc, req.id desc limit :limit;", $pdo_params);
@@ -94,8 +77,6 @@ class stats extends \controllers\Controller {
 		$count_data = count($data)-1;
 		$data[] = 'total sql:' . $count_data;
 		$this->app->set('profiler', $data);
-
-//		echo \View::instance()->render($app->get('default_template_file'));
 
 		$this->render();
 	}
@@ -134,8 +115,6 @@ class stats extends \controllers\Controller {
 		$data['date_start'] = validate::filter('date', $data['date_start']);
 		$data['date_finish'] = validate::filter('date', $data['date_finish']);
 		$data['unique_numbers'] = validate::filter('int', $data['unique_numbers']);
-
-//		$data['comparison_key'] = (in_array($data['comparison_key'], $this->comparison_keys) ? $data['comparison_key'] : false);
 //		$data['status'] = validate::filter_array('in_array',$data['status'], $this->statuses);
 
 		return $data;

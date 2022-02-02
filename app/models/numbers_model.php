@@ -84,8 +84,8 @@ class numbers_model extends \models\Model {
 		return $this->db->exec($sql, $pdo_params);
 	}
 
-	public function insert_num_request($number_id) {
-		return $this->db->exec("insert into {$this->tbl_number_requests} set number_id = :number_id, date = :time", [':number_id' => $number_id, ':time' =>  time()]);
+	public function insert_num_request($number_id, $type = 0) {
+		return $this->db->exec("insert into {$this->tbl_number_requests} set number_id = :number_id, type =:type, date = :time", [':number_id' => $number_id, ':time' =>  time(), ':type' => $type]);
 	}
 	public function get_status($number, $time) {
 		return $this->db->exec("select * from {$this->tbl_numbers} where number = :number and date >= :time order by date asc limit 1", [':number' => $number, ':time' => $time]);
