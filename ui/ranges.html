@@ -1,0 +1,96 @@
+<div class="card">
+	<div class="card-header card-header-flex">
+		<div class="d-flex flex-column justify-content-center mr-auto">
+			<h5><strong class="mr-1">Ranges</strong></h5>
+		</div>
+
+		<?=\View::instance()->render('blocks/main_buttons.html');?>
+	</div>
+	<? if(!empty($data)) { ?>
+		<div class="card-body">
+			<div>
+				<table class="table">
+					<thead class="thead-default">
+					<tr>
+						<th>Id</th>
+						<th>Partner</th>
+						<th>Numbers</th>
+						<th>Status</th>
+						<th>Country</th>
+						<th>Manage</th>
+					</tr>
+					</thead>
+					<? foreach ($data as $s) { $i++ ?>
+					<tr>
+						<td><?=$i ?></td>
+						<td><?=$app->get('partners.' . $s['partner_id']) ?></td>
+						<td><?=$s['start'] . '—' .  $s['end'] ?></td>
+						<td><?=$s['status'] == 1 ? 'active' : 'deactive' ?></td>
+						<td><?=$app->get('countries.' . $s['country_id']) . ' - ' . $s['country_id'] ?></td>
+						<td>
+							<div class="btn-group btn-sm" aria-label="" role="group">
+								<a class="btn btn-sm btn-info" href="<?=\helpers\html::url('/ranges/range_edit/' . $s['id']) ?>">
+									<i class="fe fe-edit mr-1" aria-hidden="true"></i>
+									<?=__('forms.edit')?>
+								</a>
+								<? if(\helpers\auth::check_right(\helpers\auth::GROUP_SUPER_ADMIN) && $s['client_id'] > 0) { ?>
+									<a class="btn btn-sm btn-danger delete_button" data-href="<?=\helpers\html::url('/ranges/range_delete/' . $s['id']) ?>" data-type="ajax" data-block="delete_<?=$s['id'] ?>" data-toggle="modal" data-target="#confirm-delete">
+										<i class="fe fe-trash-2 mr-1" aria-hidden="true"></i>
+										<?=__('forms.delete')?>
+									</a>
+								<? } ?>
+							</div>
+						</td>
+					</tr>
+					<? } ?>
+					</tbody>
+				</table>
+			</div>
+		</div>
+	<? } ?>
+	<? if(!empty($data_list_groups)) { ?>
+
+		<div class="card-body">
+			<h5><strong class="mr-1">List of numbers</strong></h5>
+			<div>
+				<table class="table">
+					<thead class="thead-default">
+					<tr>
+						<th>Id</th>
+						<th>Partner</th>
+						<th>Name</th>
+						<th>Status</th>
+						<th>Manage</th>
+					</tr>
+					</thead>
+					<? foreach ($data_list_groups as $s) { $i++ ?>
+						<tr>
+							<td><?=$i ?></td>
+							<td><?=$app->get('partners.' . $s['partner_id']) ?></td>
+							<td><?=$s['name'] ?></td>
+							<td><?=$s['status'] == 1 ? 'active' : 'deactive' ?></td>
+							<td>
+								<div class="btn-group btn-sm" aria-label="" role="group">
+<!--									<a class="btn btn-sm btn-info" href="--><?//=\helpers\html::url('/ranges/range_edit/' . $s['id']) ?><!--">-->
+<!--										<i class="fe fe-edit mr-1" aria-hidden="true"></i>-->
+<!--										--><?//=__('forms.edit')?>
+<!--									</a>-->
+									<? if(\helpers\auth::check_right(\helpers\auth::GROUP_SUPER_ADMIN) && $s['client_id'] > 0) { ?>
+										<a class="btn btn-sm btn-danger delete_button" data-href="<?=\helpers\html::url('/ranges/range_delete/' . $s['id']) ?>" data-type="ajax" data-block="delete_<?=$s['id'] ?>" data-toggle="modal" data-target="#confirm-delete">
+											<i class="fe fe-trash-2 mr-1" aria-hidden="true"></i>
+											<?=__('forms.delete')?>
+										</a>
+									<? } ?>
+								</div>
+							</td>
+						</tr>
+					<? } ?>
+					</tbody>
+				</table>
+			</div>
+		</div>
+	<? } ?>
+<? if(empty($data_list_groups) && empty($data)) { ?>
+	<div class="card-body"><H5>No ranges</H5></div>
+<? } ?>
+</div>

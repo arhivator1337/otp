@@ -1,0 +1,77 @@
+<? if(!$error) { ?>
+<form method="post" enctype="multipart/form-data">
+
+	<div class="card">
+		<div class="card-body">
+			<h5 class="mb-4">
+				<strong><?=$page_title?></strong>
+			</h5>
+			<div>
+				<div class="row">
+					<? if($add === true) { ?>
+						<div class="form-group col-sm-2">
+							<label>Partner</label>
+							<div class="input-group date">
+								<select name="partner_id" class="form-control" id="partner_id" required>
+									<option selected disabled value=""><?=__('forms.choose'); ?></option>
+									<? foreach ($app->get('partners') as $id => $val) { ?>
+										<option value="<?=$id?>" <?=$data['partner_id'] == $id ? 'selected' : '' ?>>
+											<?=$val?>
+										</option>
+									<? } ?>
+								</select>
+							</div>
+						</div>
+
+						<div class="form-group col-sm-2">
+							<label>Country</label>
+							<div class="input-group date">
+								<select name="country_id" class="form-control" id="country_id" required>
+									<option selected disabled value=""><?=__('forms.choose'); ?></option>
+									<? foreach ($countries as $id => $val) { ?>
+										<option value="<?=$id?>" <?=$data['country_id'] == $id ? 'selected' : '' ?>>
+											<?=$val?>
+										</option>
+									<? } ?>
+								</select>
+							</div>
+						</div>
+					<? } ?>
+
+					<div class="form-group col-md-2"><?=__('main.status'); ?>
+						<div class="input-group">
+							<div class="btn-group" data-toggle="buttons">
+								<label class="btn btn-outline-success">
+									<input type="radio" name="status" value="1" <?=$data['status'] ? 'checked="true"' : ''; ?>><strong><?=__('main.on'); ?></strong></label>
+								<label class="btn btn-outline-danger">
+									<input type="radio" name="status" value="0" <?=$data['status'] == 0 ? 'checked="true"' : ''; ?>><strong><?=__('main.off'); ?></strong></label>
+							</div>
+						</div>
+					</div>
+
+					<div class="form-group col-sm-2">
+						<label>Start</label>
+						<div class="input-group date">
+							<input name="start" value="<?=$data['start']?>" type="text" class="form-control" />
+						</div>
+					</div>
+
+					<div class="form-group col-sm-2">
+						<label>End</label>
+						<div class="input-group date">
+							<input name="end" value="<?=$data['end']?>" type="text" class="form-control" />
+						</div>
+					</div>
+
+					<div class="form-group col-sm-2">
+						<label for="country">&nbsp; </label>
+						<div id="country">
+							<button class="btn btn-primary" id="bt_ranges" type="submit">Save</button>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</form>
+<? } ?>

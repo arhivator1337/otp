@@ -1,0 +1,39 @@
+<div class="card">
+	<div class="card-header card-header-flex">
+		<div class="d-flex flex-column justify-content-center mr-auto">
+			<h5><strong class="mr-1">Country vs Name tiers relation</strong></h5>
+		</div>
+
+		<?=\View::instance()->render('blocks/main_buttons.html');?>
+	</div>
+	<? if(!empty($data)) { ?>
+		<div class="card-body">
+			<div>
+				<table class="table">
+					<thead class="thead-default">
+					<tr>
+						<th>#</th>
+						<th>Country</th>
+						<th>Group</th>
+						<th>Name</th>
+						<th>Nickname</th>
+						<th></th>
+					</tr>
+					</thead>
+					<? foreach ($data as $s) { $i++ ?>
+					<tr>
+						<td><?=$i ?></td>
+						<td><?=$s['country'] ?></td>
+						<td><?=$s['group'] ?></td>
+						<td><?=$s['name'] ?></td>
+						<td><?=$s['nickname'] ?></td>
+					</tr>
+					<? } ?>
+					</tbody>
+				</table>
+			</div>
+		</div>
+	<? } else { ?>
+		<div class="card-body"><H5>Add one</H5></div>
+	<? } ?>
+	</div>

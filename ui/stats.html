@@ -1,0 +1,303 @@
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-select@1.13.14/dist/css/bootstrap-select.min.css">
+<script src="https://cdn.jsdelivr.net/npm/bootstrap-select@1.13.14/dist/js/bootstrap-select.min.js"></script>
+<script type="text/javascript">
+    $(function () {
+        $('#datetimepicker7').datetimepicker({
+            format: 'YYYY-MM-DD HH:mm:ss'
+        });
+        $('#datetimepicker8').datetimepicker({
+            format: 'YYYY-MM-DD HH:mm:ss',
+            useCurrent: false
+
+        });
+        $("#datetimepicker7").on("change.datetimepicker", function (e) {
+            $('#datetimepicker8').datetimepicker('minDate', e.date);
+        });
+        $("#datetimepicker8").on("change.datetimepicker", function (e) {
+            $('#datetimepicker7').datetimepicker('maxDate', e.date);
+        });
+    });
+</script>
+
+<div class="card">
+	<div class="card-body">
+
+		<h5 class="mb-4">
+			<strong><?=$title?></strong>
+		</h5>
+		<form method="get" id="history_params">
+			<div class="row">
+				<div class="form-group col-md-6">
+					<label for="Type">Partner</label>
+					<select name="partner_id[]" id="Type" class="form-control selectpicker" multiple>
+<!--						--><?$data['partner_id'] = !empty($data['partner_id']) ? array_flip($data['partner_id']) : [];  ?>
+						<? foreach ($app->get('partners') as $id => $val) { ?>
+							<option value="<?=$id?>" <?=isset($data['partner_id'][$id]) ? 'selected' : '' ?>>
+								<?=$val?>
+							</option>
+						<? } ?>
+					</select>
+				</div>
+
+				<div class="form-group col-md-6">
+					<label for="Task"><?=__('main.task')?></label>
+					<?$data['task'] = !empty($data['task']) ? array_flip($data['task']) : [];  ?>
+					<select name="task[]" id="Task" class="form-control selectpicker" multiple>
+						<?/* foreach ($tasks as $t) { ?>
+							<?=$task[$t['id']] ?><?=$t['id']?>
+							<option value="<?=$t['id']?>" <?=isset($data['task'][$t['id']]) ? 'selected' : '' ?>>
+								<?=$t['name']?>
+							</option>
+						<? } */ ?>
+					</select>
+				</div>
+
+				<div class="form-group col-md-6">
+					<label for="Status"><?=__('main.status')?></label>
+					<?$data['status'] = !empty($data['status']) ? array_flip($data['status']) : [];  ?>
+					<select name="status[]" id="Status" class="form-control selectpicker" multiple>
+						<? /*foreach ($statuses as $id => $val) { ?>
+							<option value="<?=$val?>" <?=isset($data['status'][$val]) ? 'selected' : '' ?>>
+								<?=$val?>
+							</option>
+						<? } */?>
+					</select>
+				</div>
+
+				<div class="form-group col-md-6">
+					<label for="Servers"><?=__('main.server')?></label>
+					<select name="servers[]" id="Servers" class="form-control selectpicker" multiple>
+						<?/*$data['servers'] = !empty($data['servers']) ? array_flip($data['servers']) : [];  ?>
+						<? foreach ($servers as $id => $val) { ?>
+							<option value="<?=$id?>" <?=isset($data['servers'][$id]) ? 'selected' : '' ?>>
+								<?=$val['ip'] ?>
+							</option>
+						<? }*/ ?>
+					</select>
+				</div>
+			</div>
+
+			<div>
+				<div class="row">
+					<div class="form-group col-sm-6">
+						<label><?=__('main.date_start')?></label>
+						<div class="input-group date" id="datetimepicker7" data-target-input="nearest">
+							<input name="date_start" value="<?=$data['date_start']?>" type="text" class="form-control datetimepicker-input" data-target="#datetimepicker7"/>
+							<div class="input-group-append" data-target="#datetimepicker7" data-toggle="datetimepicker">
+								<div class="input-group-text"><i class="fa fa-calendar"></i></div>
+							</div>
+						</div>
+					</div>
+
+					<div class="form-group col-sm-6">
+						<label><?=__('main.date_finish')?></label>
+						<div class="input-group date" id="datetimepicker8" data-target-input="nearest">
+
+							<input name="date_finish" value="<?=$data['date_finish']?>" type="text" class="form-control datetimepicker-input" data-target="#datetimepicker8"/>
+							<div class="input-group-append" data-target="#datetimepicker8" data-toggle="datetimepicker">
+								<div class="input-group-text"><i class="fa fa-calendar"></i></div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+
+			<div class="row">
+				<div class="form-group col-sm-6">
+					<label for="unique_numbers">Only unique numbers</label>
+					<div class="row">
+						<div class="col-sm-2">
+							<div class="form-group">
+								<div class="btn-group" data-toggle="buttons">
+									<label class="btn btn-outline-secondary">
+										<input type="radio" name="type" value="1" <?=$data['unique_numbers'] == 1 ? 'checked="true"' : ''; ?>>Yes</label>
+									<label class="btn btn-outline-info">
+										<input type="radio" name="type" value="2" <?=$data['unique_numbers'] == 0 ? 'checked="true"' : ''; ?>>No</label>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+
+				<div class="col-sm-2">
+					<label for="Limit"><?=__('main.limit')?></label>
+					<div class="input-group date">
+						<input name="limit" value="<?=$data['limit'] ?: 100 ?>" type="text" class="form-control" id="Limit" />
+					</div>
+				</div>
+			</div>
+
+			<div class="form-actions">
+				<button type="button" class="btn btn-primary mr-2 px-5" name="refresh" data-url="<?=$action_url?>" onclick="changePageTo(this)"><?=__('forms.load')?></button>
+				<button type="submit" class="btn btn-outline-success" onclick=""><?=__('forms.create_link')?></button>
+			</div>
+		</form>
+	</div>
+</div>
+<?=\helpers\blocks::get('player', '', ['player_download_btn' => true]) ?>
+
+<?=\helpers\blocks::get('pagination', [], ['action_url' => '/dial_history/get/', 'page' => $page]) ?>
+
+<div data-jsfiddle="example1" class="ajax-container">
+	<div id="handsontable" class="hot handsontable"></div>
+</div>
+
+<?=\helpers\blocks::get('pagination', 'ajax', ['action_url' => $pagination_url, 'page' => $page]) ?>
+
+<link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/handsontable@11.0.1/dist/handsontable.full.min.css">
+<script src="https://cdn.jsdelivr.net/npm/handsontable@11.0.1/dist/handsontable.full.min.js"></script>
+
+<!--<link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/handsontable@latest/dist/handsontable.fulmain.min.css">-->
+<!--<script src="https://cdn.jsdelivr.net/npm/handsontable@latest/dist/handsontable.fulmain.min.js"></script>-->
+
+<script>
+	var pagination_url = '<?=$pagination_url?>';
+    function forHumans ( seconds ) {
+        var levels = [
+            [Math.floor(seconds / 31536000), 'years'],
+            [Math.floor((seconds % 31536000) / 86400), 'days'],
+            [Math.floor(((seconds % 31536000) % 86400) / 3600), 'hours'],
+            [Math.floor((((seconds % 31536000) % 86400) % 3600) / 60), 'minutes'],
+            [(((seconds % 31536000) % 86400) % 3600) % 60, 'seconds'],
+        ];
+        var returntext = '';
+
+        for (var i = 0, max = levels.length; i < max; i++) {
+            if ( levels[i][0] === 0 ) continue;
+            returntext += ' ' + levels[i][0] + ' ' + (levels[i][0] === 1 ? levels[i][1].substr(0, levels[i][1].length-1): levels[i][1]);
+        };
+        return returntext.trim();
+    }
+
+	var changePageTo = function(obj = false, page = false) {
+		if(page != false)
+		    page = page;
+		else if(!(page = Number($('.page_page').val()) ))
+            page = '';
+		// else if(typeof $(obj).attr('data-page') !== 'undefined' && !(page = Number($(obj).attr('data-page'))))
+        //       page =  '';
+
+        var prev_page = '';
+
+        if(page-1 >= 0) {
+            $('.page_previous').removeAttr('disabled');
+            prev_page = page - 1;
+        }
+        else
+            prev_page = '';
+
+        next_page = page+1;
+
+        $('.page_previous').attr('data-page', prev_page);
+        $('.page_next').attr('data-page', next_page);
+
+        $("#handsontable").animate({opacity: "0.8"}, {duration: 10});
+        var formValues = $('#history_params').serialize();
+        $.post(pagination_url + page, formValues, function(res){
+            if(res.error == 1) {
+                alert(res.error_message);
+                return false;
+            }
+            hot.loadData(res.data);
+            $("#handsontable").animate({opacity: "1"}, {duration: 1, complete: function(){}});
+        }, "json");
+        return page;
+	}
+
+    $(document).ready(function(){
+        changePageTo(this, <?=$page > 0 ? $page : 0 ?>);
+
+        $("button.pagination").on('click', function (event) {
+            event.preventDefault();
+
+            page = Number($(this).attr('data-page'));
+
+            $('.page_page').val(page);
+
+            changePageTo(parent, page);
+            var prev_page = '';
+
+            if (page - 1 >= 0) {
+                $('.page_previous').removeAttr('disabled');
+                prev_page = page - 1;
+            } else
+                prev_page = '';
+
+            next_page = page + 1;
+
+            $('.page_previous').attr('data-page', prev_page);
+            $('.page_next').attr('data-page', next_page);
+
+
+        });
+    });
+</script>
+
+<form class="attireCodeToggleBlock" id="ranges_ajax" style="z-index: 200">
+</form>
+
+
+<script>
+    var
+        $$ = function(id) {
+            return document.getElementById(id);
+        },
+        getData = function() {},
+        hot = new Handsontable($$('handsontable'), {
+            colHeaders: [
+	            <?$cols = ['Numbers', 'origin data', 'Request Date', 'partner', 'country']?>
+                <?="'" . implode("','", $cols) . "'" ?>
+            ],
+
+            columns: [
+                {
+                    data: 'number',
+                    type: 'text',
+                    //width: 70,
+                },
+                {
+                    data: 'origin_date',
+                    type: 'text',
+                    dateFormat: 'YYYY/MM/DD/ HH:MM:SS',
+                },
+                {
+                    data: 'req_date',
+                    type: 'text',
+                    dateFormat: 'YYYY/MM/DD/ HH:MM:SS',
+                },
+                {
+                    data: 'partner',
+                    type: 'text',
+                    // width: 75,
+                },
+                {
+                    data: 'country',
+                    type: 'text',
+                    // width: 60,
+                },
+
+
+            ],
+            startRows: 1,
+            startCols: 8,
+            manualColumnResize: true,
+            filters: true,
+            dropdownMenu: true,
+            multiColumnSorting: true,
+            headerTooltips: {
+                rows: true,
+                columns: true
+            },
+            rowHeights: 23,
+            wordWrap: false,
+            columnHeaders: true,
+            rowHeaders: true,
+            exportFile: true,
+        });
+    var hotColumn = hot.getPlugin('hiddenColumns');
+
+    function humanTime(instance, td, row, col, prop, value, cellProperties) {
+        Handsontable.renderers.TextRenderer.apply(this, arguments);
+        td.innerHTML = forHumans(value);
+    };
+</script>

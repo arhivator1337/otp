@@ -1,0 +1,41 @@
+<div class="card">
+	<div class="card-header card-header-flex">
+		<div class="d-flex flex-column justify-content-center mr-auto">
+			<h5><strong class="mr-1">Notification</strong></h5>
+		</div>
+
+	</div>
+	<? if(!empty($data)) { ?>
+		<div class="card-body">
+			<div>
+				<table class="table">
+					<thead class="thead-default">
+					<tr>
+						<th>#</th>
+						<th>Type</th>
+						<th>Module</th>
+						<th>Message</th>
+						<th>Status</th>
+						<th>Date</th>
+					</tr>
+					</thead>
+					<? $i = 0;?>
+					<? foreach ($data as $s) { ?>
+					<tr <?=$s['fatal'] >= 1 ? 'class="my-bg-alert-light"' : ''?>>
+						<td><?=$i++ ?></td>
+						<td><?=$types[$s['type']] ?></td>
+						<td><?=$s['module'] ?></td>
+						<td><?=$s['message'] ?></td>
+						<td><?=$s['status'] == 0 ? 'unread' : 'read' ?></td>
+						<td class="text-nowrap"><?=date('m.d H:i', $s['date'])?></td>
+					</tr>
+					<? } ?>
+					</tbody>
+				</table>
+			</div>
+		</div>
+
+	<? } else { ?>
+		<div class="card-body"><H5>No messages</H5></div>
+	<? } ?>
+	</div>

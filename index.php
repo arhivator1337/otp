@@ -25,9 +25,7 @@ $time_pre = microtime(true);
 
 //preparation
 $app->config('config.ini');
-
-if(file_exists('marketing.ini'))
-	$app->config('marketing.ini');
+$app->config('otp.ini');
 
 //$app->set('SERIALIZER', 'php'); //to avoid ig binary serialize
 ini_set('error_log', $app->get('php_log'));
@@ -36,16 +34,20 @@ $app->set('LANGUAGE', $lang);
 //$app->set('FALLBACK') ;
 $app->set('lang', $lang);
 
-if(filter_var($app->get('HOST'), FILTER_VALIDATE_URL))
+
+if(filter_var($app->get('HOST'), FILTER_VALIDATE_URL) or filter_var($app->get('HOST'), FILTER_VALIDATE_IP))
 	$_SERVER['HTTP_HOST'] = $app->get('HOST');
 else
 	$app->set('HOST', $_SERVER['HTTP_HOST']);
+
 
 if($app->get('cache_driver') && $app->get('cache_host'))
 	$app->set('CACHE', $app->get('cache_driver') . '=' . $app->get('cache_host'));
 
 if(php_sapi_name() != "cli") {
 	\helpers\auth::session_start();
+	if($app->get('debug') == 3)
+		Falsum\Run::handler(true);
 }
 
 
@@ -81,16 +83,16 @@ $app->set("db", new DB\SQL(
 	$app->get('db_pass')
 ));
 
+$app->route('GET|POST /api_v2/@param1/@action/@param2', '\controllers\api_v2->@action');
+$app->route('GET|POST /api_v2/@param1/@action/@param2/@param3', '\controllers\api_v2->@action');
+$app->route('GET|POST /api_v2/@param1/@action/@param2/@param3/@param4', '\controllers\api_v2->@action');
+
 $app->route('GET|POST /@controller', '\controllers\@controller->index');
 $app->route('GET|POST /@controller/@action', '\controllers\@controller->@action');
 
 $app->route('GET|POST /admin/@controller', '\controllers\admin\@controller->index');
 $app->route('GET|POST /admin/@controller/@action', '\controllers\admin\@controller->@action');
 $app->route('GET|POST /admin/@controller/@action/@param1', '\controllers\admin\@controller->@action');
-
-//ajax
-$app->route('GET|POST /dial_history/get [ajax]', '\controllers\dial_history->get');
-$app->route('GET /dashboard/@action [ajax]', '\controllers\dashboard->@action');
 
 $str = '';
 for ($i = 1; $i <= 5; $i++) {
@@ -101,7 +103,6 @@ for ($i = 1; $i <= 5; $i++) {
 
 $app->route('GET|POST|PUT /tasks/edit/@param1', '\controllers\tasks->edit');
 $app->route('GET|POST /tasks/delete/@param1 [ajax]', '\controllers\tasks->delete');
-$app->route('GET /ivr/delete/@param1 [ajax]', '\controllers\ivr->delete');
 //$app->route('GET /tasks/ivr_responses/@param1 [ajax]', '\controllers\tasks->ivr_response');
 
 $app->route('GET /scripts/@controller/@action', '\scripts\@controller->@action');
