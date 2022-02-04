@@ -1,0 +1,45 @@
+<div class="card">
+	<div class="card-header card-header-flex">
+		<div class="d-flex flex-column justify-content-center mr-auto">
+			<h5><strong class="mr-1">OTP</strong></h5>
+		</div>
+
+		<? foreach ($partners_data as $id => $name) { ?>
+			<div class="d-flex flex-column justify-content-center mr-4">
+				<a class="btn <?=$app->get('GET.partner_id') == $id ? 'btn-success' : ''?>" href="/api/show_tries/100?partner_id=<?=$id?>"><?=$name?></a>
+			</div>
+		<? } ?>
+	</div>
+	<? if(!empty($data)) { ?>
+		<div class="card-body">
+			<div>
+				<table class="table">
+					<thead class="thead-default">
+					<tr>
+						<th>#</th>
+						<th>Number</th>
+						<th>Date</th>
+						<th>Date of try</th>
+						<th>Partner</th>
+						<th>Country</th>
+					</tr>
+					</thead>
+					<? foreach ($data as $s) { $i++ ?>
+					<tr>
+						<td><?=$i ?></td>
+						<td><?=$s['number'] ?></td>
+						<td><?=$s['origin_date'] ? date("Y-m-d H:i:s", $s['origin_date']) : ''?></td>
+						<td><?=$s['req_date'] ? date("Y-m-d H:i:s", $s['req_date']) : ''?> </td>
+						<td><?=$s['partner']?> </td>
+						<td><?=$s['country']?> </td>
+					</tr>
+					<? } ?>
+				</table>
+			</div>
+		</div>
+	<? } else { ?>
+		<div class="card-body"><H5><?=__('ivr.add_one')?></H5></div>
+	<? } ?>
+	</div>
+
+<?=\helpers\blocks::get('player') ?>

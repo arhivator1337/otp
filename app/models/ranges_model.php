@@ -13,13 +13,8 @@ class ranges_model extends \models\Model {
 		$this->model = new \DB\SQL\Mapper($this->db, $this->tbl_ranges);
 	}
 
-	function get_ranges($country_id, $status = 1) {
-		$_offset = '';
-		$pdo_params = [':status' => $status];
-
-		$_params = [];
-
-		$ranges = $this->db->exec("select * from {$this->tbl_ranges} where status = :status", [':status' => $status]);
+	function get_ranges($status = null, $country_id = null, $partner_id = null) {
+		$ranges = $this->query_gen("select * from {$this->tbl_ranges} %where%", ['status = :status' => $status, 'country_id IN (:country_id)' => $country_id, 'partner_id = :partner_id' => $partner_id]);
 
 		for ($i = 0; $i < count($ranges); $i++) {
 			$ranges[$i]['short_code'] = substr($ranges[$i]['start'], 0, 3);

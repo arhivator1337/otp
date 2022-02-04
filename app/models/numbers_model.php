@@ -13,75 +13,10 @@ class numbers_model extends \models\Model {
 		$this->model = new \DB\SQL\Mapper($this->db, $this->tbl_numbers);
 	}
 
-	public function get_all_stats($limit = 100, $page = false, $params = []) {
-
-/*
-		$pdo_params = [':limit' => $limit];
-
-		$sql_params = [];
-		if (($partner_id = validate::filter('int_no_zero', $app->get('GET.partner_id'))) ) {
-			$pdo_params[':partner_id'] = $partner_id;
-			$sql_params[] = 'ran.partner_id  = :partner_id';
-		}
-
-		$str_params = '';
-		if(!empty($sql_params))
-			$str_params = ' where ' .implode(' and ', $sql_params);
-		*/
-
-		$_offset = '';
-		$pdo_params = [':limit' => $limit];
-
-		if($page) {
-			$_offset = ' OFFSET :offset';
-			$pdo_params[':offset'] = $limit*$page;
-		}
-
-		$_params = [];
-//		if($params['partner_id']) {
-//			$_params.= " and ran.partner_id =:partner_id " ;
-//			$pdo_params[':partner_id'] = $params['partner_id'];
-//		}
-
-//		if($params['task']) {
-//			//$_params.= " and t.id IN (:task) "; //$pdo_params[':task'] = implode(',', $params['task']);
-//			$_params .= " and t.id IN (" . implode(",", $params['task']) . ")";
-//		}
-//
-		if($params['partner_id'])
-			$_params[] = 'ran.partner_id IN (' . implode(',', $params['partner_id']) . ')';
-//
-//		if($params['status'])
-//			$_params.= " and d.dial_status IN('" . implode("','", $params['status']) . "')" ;
-
-		if($params['date_start']) {
-			$_params[] = " n.date >= :date_start ";
-			$pdo_params[':date_start'] = $params['date_start'];
-		}
-
-		if($params['date_finish']) {
-			$_params[] = " n.date <= :date_finish ";
-			$pdo_params[':date_finish'] = $params['date_finish'];
-		}
-
-		if(!empty($_params))
-			$str_params = " where " . implode(' and ', $_params);
-
-//		if($params['duration'] && $params['comparison_key']) {
-//			$_params.= " and d.duration {$params['comparison_key']} :duration ";
-//			$pdo_params[':duration'] = $params['duration'];
-//		}
-
-		$sql = "SELECT *, req.date as req_date, n.date as origin_date from {$this->tbl_numbers} as n left join {$this->tbl_number_requests} as req on req.number_id = n.id left join {$this->tbl_ranges} as ran on ran.id = n.range_id {$str_params} order by n.id desc, req.id desc limit :limit";
-
-//		echo '<pre>';
-//		print_r($sql);
-//		echo '</pre>';
-//		echo '<pre>';
-//		print_r($pdo_params);
-//		echo '</pre>';
-//		die;
-		return $this->db->exec($sql, $pdo_params);
+	public function get_all_stats($params = []) {
+		$numbers = $this->query_gen("SELECT *, req.date as req_date, n.date as origin_date from {$this->tbl_numbers} as n left join {$this->tbl_number_requests} as req on req.number_id = n.id left join otp_ranges as ran on ran.id = n.range_id %where% order by n.id desc, req.id desc limit :limit",
+			['limit' => $params['limit'], 'ran.partner_id = :partner_id' => $params['partner_id'], 'country_id IN (:country_id)' => $params['country_id']]);
+		return $numbers;
 	}
 
 	public function insert_num_request($number_id, $type = 0) {
