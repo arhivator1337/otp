@@ -16,30 +16,30 @@ class name_generator {
 		$this->nicks = include 'data/nicknames.php';
 	}
 
-	function get_names(\Base $app, $params) {
-		if($params['param1'] == 'no_ru') {
-			unset($this->names['russia'], $this->names['russia_ru']);
-		}
-		if(isset($params['param1']) && in_array($params['param1'], array_keys($this->names)))
-			$tier = $params['param1'];
-		else
-			$tier = 'all';
-
-		if(in_array($params['param2'], ['male', 'female', 'all']))
-			$gender = $params['param2'];
-		else
-			$gender = 'all';
-
-		$limit = validate::filter('int', $params['param3']) ?: 1000;
-
-		echo "<b>tier:</b> {$tier}<br>";
-
-		echo '<br>';
-
-		$names = $this->generate_name($tier, $gender, $limit);
-		for ($i = 0; $i < count($names); $i++)
-			echo $names[$i] . '<br>';
-	}
+//	function get_names(\Base $app, $params) {
+//		if($params['param1'] == 'no_ru') {
+//			unset($this->names['russia'], $this->names['russia_ru']);
+//		}
+//		if(isset($params['param1']) && in_array($params['param1'], array_keys($this->names)))
+//			$tier = $params['param1'];
+//		else
+//			$tier = 'all';
+//
+//		if(in_array($params['param2'], ['male', 'female', 'all']))
+//			$gender = $params['param2'];
+//		else
+//			$gender = 'all';
+//
+//		$limit = validate::filter('int', $params['param3']) ?: 1000;
+//
+//		echo "<b>tier:</b> {$tier}<br>";
+//
+//		echo '<br>';
+//
+//		$names = $this->generate_name($tier, $gender, $limit);
+//		for ($i = 0; $i < count($names); $i++)
+//			echo $names[$i] . '<br>';
+//	}
 
 
 	public function generate_name($tier, $gender = 'all', $limit = 1) {
@@ -86,14 +86,12 @@ class name_generator {
 		$ua = include 'data/user_agents.php';
 		$new = $data = [];
 
-		if($limit < 100)
-			$_limit = 100;
+		$_limit = $limit < 100 ? 100 : $limit;
 
 		for ($i = 0; $i < count($ua); $i++) {
 			$key = key($ua[$i]);
 			$data[] = array_fill(0, $_limit * $key / 100, $ua[$i][$key]);
 		}
-
 
 		for ($i = 0; $i < count($data); $i++) {
 			foreach ($data[$i] as $v) {
@@ -102,23 +100,19 @@ class name_generator {
 		}
 		shuffle($new);
 
-
 		if($limit == 1)
 			return $new[0];
 		else
 			return $new;
-
-//		for ($i = 0; $i < count($new); $i++)
-//			echo $new[$i] . '<br>';
 	}
 
-	public function generate_nicknames(\Base $app, $params) {
-		$limit = validate::filter('int', $params['param1']) ?: 1000;
-		$nicks = $this->generate_nickname($limit);
-		for ($i = 0; $i < count($nicks); $i++)
-			echo $nicks[$i] . '<br>';
-
-	}
+//	public function generate_nicknames(\Base $app, $params) {
+//		$limit = validate::filter('int', $params['param1']) ?: 1000;
+//		$nicks = $this->generate_nickname($limit);
+//		for ($i = 0; $i < count($nicks); $i++)
+//			echo $nicks[$i] . '<br>';
+//
+//	}
 
 	public function generate_nickname($limit = 1, $name_in_nick = false)  {
 		for ($i = 0; $i < $limit; $i++) {
@@ -139,7 +133,7 @@ class name_generator {
 			$nick = $first. $glue . $part2[mt_rand(0, count($part2)-1)] . $glue2;
 			$nick = $this->randomize_case($nick);
 
-			$ret[] = str_replace([' ('], '', $nick);
+			$ret[] = str_replace(['(', ')', ' '], '', $nick);
 		}
 		return $ret;
 	}
