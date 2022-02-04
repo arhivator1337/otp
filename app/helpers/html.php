@@ -256,8 +256,13 @@ class html {
 
 		if($settings['proxy_ip']) {
 			curl_setopt($ch, CURLOPT_HTTPPROXYTUNNEL , 1);
-			curl_setopt($ch, CURLOPT_PROXY, $settings['proxy_ip'] . ':' . $settings['proxy_port']);
-//			curl_setopt($ch, CURLOPT_PROXYPORT, $settings['proxy_port']);
+			curl_setopt($ch, CURLOPT_PROXY, $settings['proxy_ip']);// . ':' . $settings['proxy_port']);
+			curl_setopt($ch, CURLOPT_PROXYPORT, $settings['proxy_port']);
+			if($settings['proxy_ip'] > 15) {
+				curl_setopt($ch, CURLOPT_IPRESOLVE, CURL_IPRESOLVE_V6);
+//				curl_setopt($ch, CURLOPT_PROXYPORT, $settings['proxy_port']);
+			}
+
 			curl_setopt($ch, CURLOPT_PROXYUSERPWD, $settings['proxy_login'] . ':' . $settings['proxy_pass']);
 		}
 
