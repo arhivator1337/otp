@@ -14,22 +14,25 @@ https://blog.reedsy.com/character-name-generator/language/arabic/
 1.
  count=50
     for i in $(seq $count); do
-curl 'https://ru.worldnames.xyz/names/generator/burkina-faso/male/' \
+curl -s 'https://worldnames.xyz/names/generator/mozambique/female/' \
   -H 'Connection: keep-alive' \
-  -H 'Cache-Control: max-age=0' \
-  -H 'sec-ch-ua: " Not A;Brand";v="99", "Chromium";v="92", "Opera";v="78"' \
+  -H 'sec-ch-ua: "Opera";v="83", "Chromium";v="97", ";Not A Brand";v="99"' \
   -H 'sec-ch-ua-mobile: ?0' \
+  -H 'sec-ch-ua-platform: "macOS"' \
   -H 'Upgrade-Insecure-Requests: 1' \
-  -H 'User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_5) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/92.0.4515.159 Safari/537.36 OPR/78.0.4093.184' \
+  -H 'User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_5) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/97.0.4692.99 Safari/537.36 OPR/83.0.4254.27' \
   -H 'Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9' \
   -H 'Sec-Fetch-Site: same-origin' \
   -H 'Sec-Fetch-Mode: navigate' \
   -H 'Sec-Fetch-User: ?1' \
   -H 'Sec-Fetch-Dest: document' \
-  -H 'Referer: https://ru.worldnames.xyz/names/generator/burkina-faso/female/' \
+  -H 'Referer: https://worldnames.xyz/names/generator/mozambique/' \
   -H 'Accept-Language: en-US,en;q=0.9' \
-  -H 'Cookie: _ga=GA1.2.2016139942.1643730715; _gid=GA1.2.190860880.1643730715; __gads=ID=47959165d885d7c1-221f9e6031cd00ca:T=1643730715:RT=1643730715:S=ALNI_MZzBnFamsWrYsmk2umuOHw6tfMF8Q' \
-  --compressed --proxy-cacert --proxy-insecure -k>> burk_female.txt;
+  -H 'Cookie: _ga=GA1.2.2016139942.1643730715; __gads=ID=47959165d885d7c1-221f9e6031cd00ca:T=1643730715:RT=1643730715:S=ALNI_MZzBnFamsWrYsmk2umuOHw6tfMF8Q; _gid=GA1.2.1554838275.1644253918; _gat=1' \
+  --compressed --proxy-cacert --proxy-insecure -k >> 1_female.txt;
     done
 
-2. regex101 <div class=\"name\">[0-9]+. ([A-Za-z -]+)
+
+
+
+2. regex101  <div class=\"name\">[0-9]+. ([^<]+)
