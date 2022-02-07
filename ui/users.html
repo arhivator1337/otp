@@ -1,0 +1,51 @@
+<div class="card">
+	<div class="card-header card-header-flex">
+		<div class="d-flex flex-column justify-content-center mr-auto">
+			<h5><strong class="mr-1"><?=__('main.manage_users')?></strong></h5>
+		</div>
+
+		<?=\View::instance()->render('blocks/main_buttons.html');?>
+	</div>
+
+	<div class="card-body">
+		<div>
+			<? if(!empty($data)) { ?>
+				<table class="table">
+					<thead class="thead-default">
+					<tr>
+						<th><?=__('main.id'); ?></th>
+						<th><?=__('main.username'); ?></th>
+						<th><?=__('main.group'); ?></th>
+						<th><?=__('main.client_id'); ?></th>
+						<th><?=__('main.manage'); ?></th>
+					</tr>
+					</thead>
+					<? foreach ($data as $u) { ?>
+					<tr>
+						<td><?=$u->id ?></td>
+						<td><?=$u->username ?></td>
+						<td><?=$groups[$u->group] ?: 'wrong_group'?></td>
+						<td><?=$clients[$u->client_id]['name'] ?: '-' ?></td>
+						<td>
+							<div class="btn-group btn-sm" aria-label="" role="group">
+								<a class="btn btn-sm btn-info" href="<?=\helpers\html::url('/admin/users/edit/' . $u->id) ?>">
+									<i class="fe fe-edit mr-1" aria-hidden="true"></i>
+									<?=__('forms.edit');?>
+
+								</a>
+								<a class="btn btn-sm btn-danger delete_button" data-href="<?=\helpers\html::url('/admin/users/delete/' . $u->id) ?>" data-type="ajax" data-block="delete_<?=$u->id ?>" data-toggle="modal" data-target="#confirm-delete">
+									<i class="fe fe-trash-2 mr-1" aria-hidden="true"></i>
+									<?=__('forms.delete');?>
+								</a>
+							</div>
+						</td>
+					</tr>
+					<? } ?>
+					</tbody>
+				</table>
+			<? } else { ?>
+				<div><?=__('users.add_one_task'); ?></div>
+			<? } ?>
+		</div>
+	</div>
+</div>

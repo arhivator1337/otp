@@ -1,0 +1,47 @@
+<div class="cui__auth__containerInner">
+	<div class="text-center mb-5">
+		<h1 class="mb-5 px-3">
+			<strong><?=__('login.welcome')?></strong>
+
+		</h1>
+		<p class="mb-4">
+			<?=__('login.product_description')?>
+		</p>
+	</div>
+
+	<div class="card cui__auth__boxContainer">
+		<div class="text-dark font-size-24 mb-4">
+			<strong><?=__('login.sign_in')?></strong>
+		</div>
+
+		<? if ($error) { ?>
+		<div class="alert alert-danger" role="alert">
+			<button type="button" class="close" data-dismiss="alert" aria-label="Close">
+				<span aria-hidden="true">×</span>
+			</button>
+			<strong> <?=__('main.error')?>:</strong> <?=__('errors.auth_failed')?>
+		</div>
+		<? } ?>
+
+		<form action="<?=\helpers\html::url('/user/login')?>" method="post" class="mb-4">
+			<div class="form-group mb-4">
+				<input name="username" type="text" class="form-control" placeholder="<?=__('main.username')?>" />
+			</div>
+			<div class="form-group mb-4">
+				<input name="password" type="password" class="form-control" placeholder="<?=__('main.password')?>" />
+			</div>
+			<button class="btn btn-primary text-center w-100">
+				<strong><?=__('main.log_in')?></strong>
+			</button>
+		</form>
+		<a href="auth-forgot-password.html" class="kit__utils__link font-size-16">
+			<?=__('login.forget_password')?>
+		</a>
+	</div>
+	<div class="text-center pt-2 mb-auto">
+		<span class="mr-2"><?=__('login.no_account')?></span>
+		<a href="<?=\helpers\html::url('/#registration')?>" class="kit__utils__link font-size-16">
+			<?=__('login.sign_up')?>
+		</a>
+	</div>
+</div>

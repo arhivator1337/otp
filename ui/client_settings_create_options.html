@@ -1,0 +1,52 @@
+<div class="card">
+	<div class="card-header card-header-flex">
+		<div class="d-flex flex-column justify-content-center mr-auto">
+			<h5><strong class="mr-1"><?=__('main.choose_settings'); ?></strong></h5>
+		</div>
+
+		<?=\View::instance()->render('blocks/main_buttons.html');?>
+	</div>
+	<? if(!empty($data)) { ?>
+		<div class="card-body">
+			<div>
+					<table class="table">
+						<thead class="thead-default">
+						<tr>
+							<th><?=__('main.id'); ?></th>
+							<th><?=__('main.name'); ?></th>
+							<th><?=__('main.value'); ?></th>
+							<th><?=__('main.type'); ?></th>
+							<? if($is_validation_allowed) { ?>
+								<th><?=__('main.validation'); ?></th>
+							<? } ?>
+							<th><?=__('main.manage'); ?></th>
+						</tr>
+						</thead>
+						<? foreach ($data as $s) { $i++; ?>
+						<tr>
+							<td><?=$i ?></td>
+							<td><?=$s['name'] ?></td>
+							<td><?=$s['value'] == '' ? 'empty' : $s['value']?></td>
+							<td><?=$s['type'] ?: 'no type'?></td>
+							<? if($is_validation_allowed) { ?>
+								<td>
+									<?=$s['validation'] ?></td>
+							<? } ?>
+							<td>
+								<div class="btn-group btn-sm" aria-label="" role="group">
+									<a class="btn btn-sm btn-info" href="<?=\helpers\html::url('/client_settings/create/' . $s['name']) ?>">
+										<i class="fe fe-edit mr-1" aria-hidden="true"></i>
+										<?=__('forms.add'); ?>
+									</a>
+								</div>
+							</td>
+						</tr>
+						<? } ?>
+						</tbody>
+					</table>
+			</div>
+		</div>
+	<? } else { ?>
+	<div class="card-body"><H5><?=__('client_settings.no_data'); ?></H5></div>
+	<? } ?>
+</div>

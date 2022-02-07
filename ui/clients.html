@@ -1,0 +1,52 @@
+<div class="card">
+	<div class="card-header card-header-flex">
+		<div class="d-flex flex-column justify-content-center mr-auto">
+			<h5><strong class="mr-1"><?=__('main.manage_clients')?></strong></h5>
+		</div>
+
+		<?=\View::instance()->render('blocks/main_buttons.html');?>
+	</div>
+
+	<div class="card-body">
+		<div>
+			<? if(!empty($clients)) { ?>
+				<table class="table">
+					<thead class="thead-default">
+					<tr>
+						<th><?=__('main.id'); ?></th>
+						<th><?=__('main.name'); ?></th>
+						<th><?=__('main.type'); ?></th>
+						<th><?=__('main.minutes_this_month'); ?></th>
+						<th><?=__('main.minutes_prev_month'); ?></th>
+						<th><?=__('main.manage'); ?></th>
+					</tr>
+					</thead>
+					<? foreach ($clients as $cli) { ?>
+					<tr>
+						<td><?=$cli['id'] ?></td>
+						<td><?=$cli['name'] ?></td>
+						<td><?=$cli['type'] ?: __('main.no_type')?></td>
+						<td><?=$stats_current[$cli['id']]['minutes'] ?: 0?></td>
+						<td><?=$stats_last[$cli['id']]['minutes'] ?: 0?></td>
+						<td>
+							<div class="btn-group btn-sm" aria-label="" role="group">
+								<a class="btn btn-sm btn-info" href="<?=\helpers\html::url('/admin/clients/edit/' .$cli['id']) ?>">
+									<i class="fe fe-edit mr-1" aria-hidden="true"></i>
+									<?=__('forms.edit'); ?>
+								</a>
+								<a class="btn btn-sm btn-danger delete_button" data-href="<?=\helpers\html::url('/admin/clients/delete/' . $cli['id'])?>" data-type="ajax" data-block="delete_<?=$cli['id'] ?>" data-toggle="modal" data-target="#confirm-delete">
+									<i class="fe fe-trash-2 mr-1" aria-hidden="true"></i>
+									<?=__('forms.delete'); ?>
+								</a>
+							</div>
+						</td>
+					</tr>
+					<? } ?>
+					</tbody>
+				</table>
+			<? } else { ?>
+				<div><?=__('clients.no_data'); ?></div>
+			<? } ?>
+		</div>
+	</div>
+

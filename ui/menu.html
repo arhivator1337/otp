@@ -1,0 +1,73 @@
+<? foreach ($app->get('menu_') as $n => $m) { ?>
+	<?
+	//hide element wich is not activated in settings and presented in menu_access
+	if($m['hidden'] && !$app->get($m['setting_show']))
+		continue;
+	?>
+
+	<? if(!$m['sub']) { ?>
+		<li class="cui__menuLeft__item">
+			<a class="cui__menuLeft__item__link" href="<?=\helpers\html::url($m['link'])?>">
+				<span class="cui__menuLeft__item__title"><?=$m['name']?></span>
+				<i class="cui__menuLeft__item__icon fe <?=$m['icon']?>"></i>
+			</a>
+		</li>
+	<? } else { ?>
+		<li class="cui__menuLeft__item cui__menuLeft__submenu">
+		<span class="cui__menuLeft__item__link">
+				<span class="cui__menuLeft__item__title"><?=__('menu.'.$n)?></span>
+			<i class="cui__menuLeft__item__icon fe <?=$m['icon']?>"></i>
+		</span>
+			<ul class="cui__menuLeft__navigation">
+				<?  foreach ($m['sub'] as $sub_k => $sub_m) {
+					if(!is_array($sub_m) or
+						//hide element wich is not activated in settings and presented in menu_access
+						($sub_m['hidden'] && !$app->get($sub_m['setting_show'])))
+
+						continue;
+				?>
+					<li class="cui__menuLeft__item">
+						<span class="cui__menuLeft__item__link">
+							<span class="cui__menuLeft__item__title"><?=\helpers\html::url($sub_m['link'], __('menu.'.$sub_k))?>  <!-- <i class="cui__menuLeft__item__icon fe fe-layers"></i> --></span>
+						</span>
+					</li>
+				<? }  ?>
+			</ul>
+		</li>
+	<? } ?>
+<? } ?>
+
+<? if(\helpers\auth::check_right(\helpers\auth::GROUP_SUPER_ADMIN)) { ?>
+	<li class="cui__menuLeft__category">
+		<?=__('menu.admin_menu')?>
+	</li>
+	<? foreach (\Base::instance()->get('a_menu') as $n => $m) { ?>
+		<? if(!$m['sub']) { ?>
+			<li class="cui__menuLeft__item">
+				<a class="cui__menuLeft__item__link" href="<?=\helpers\html::url($m['link'])?>">
+					<span class="cui__menuLeft__item__title"><?=__('menu.'.$n)?></span>
+					<i class="cui__menuLeft__item__icon fe <?=$m['icon']?>"></i>
+				</a>
+			</li>
+		<? } else { ?>
+			<li class="cui__menuLeft__item cui__menuLeft__submenu">
+			<span class="cui__menuLeft__item__link">
+				<span class="cui__menuLeft__item__title"><?=$m['name']?></span>
+				<i class="cui__menuLeft__item__icon fe <?=$m['icon']?>"></i>
+			</span>
+				<ul class="cui__menuLeft__navigation">
+					<?  foreach ($m['sub'] as $sub_k => $sub_m) { ?>
+						<li class="cui__menuLeft__item">
+					<span class="cui__menuLeft__item__link">
+						<span class="cui__menuLeft__item__title">
+							<?=\helpers\html::url($sub_k['link'], __('menu.'.$sub_m))?>
+
+							<!-- <i class="cui__menuLeft__item__icon fe fe-layers"></i> --></span>
+					</span>
+						</li>
+					<? }  ?>
+				</ul>
+			</li>
+		<? } ?>
+	<? } ?>
+<? } ?>

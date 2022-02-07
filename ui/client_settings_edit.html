@@ -1,0 +1,88 @@
+<? if(!$error) { ?>
+	<div class="card-body">
+		<h5 class="mb-4">
+			<strong><?=$page_title?></strong>
+		</h5>
+		<div class="bg-light rounded-lg p-5">
+			<form id="form-validation" name="form-validation" method="POST" class="pt-3 width-600 mx-auto">
+				<div class="form-group">
+					<label class="form-label" for="validation-login"><?=__('main.name'); ?></label>
+					<? if($add !== true) { ?>
+						<input id="validation-login" class="form-control" name="name" type="text" value="<?=$data->name?>" <?=$add ? 'disabled' : 'data-validation="[L>=3]" data-validation-message="$ must be at least 3 characters"' ?>>
+					<? } elseif($add === true) { ?>
+						<input id="validation-login" class="form-control" name="name" type="text" value="<?=$data->name?>" data-validation="[L>=3]" data-validation-message="$ must be at least 3 characters">
+					<? } else { ?>
+						<select name="value" class="form-control" id="server_id">
+							<option value=""><?=__('main.select')?></option>
+							<? foreach ($app->get('new_client_settings') as $val) {
+								if(!$val['optional']) {
+									continue;
+								}
+								?>
+								<option value="<?=$val['name']?>" <?=$data->name == $val['name'] ? 'selected' : ''?>>
+									<?=$val['name']?>
+								</option>
+							<? } ?>
+						</select>
+					<? } ?>
+				</div>
+
+				<? if($array) { ?>
+				<div class="form-group">
+					<label class="form-label" for="validation"><?=__('main.value'); ?></label>
+					<select name="value" class="form-control" id="server_id">
+						<option value=""><?=__('main.select')?></option>
+						<? foreach ($array as $val) { ?>
+							<option class="disabled" value="<?=$val?>" <?=$data->value == $val ? 'selected' : '' ?>>
+								<?=$val?>
+							</option>
+						<? } ?>
+					</select>
+				</div>
+				<? } else { ?>
+				<div class="form-group">
+					<label class="form-label" for="validation-login"><?=__('main.value'); ?></label>
+				</div>
+					<input id="validation-login" class="form-control" type="text" name="value" value="<?=$data->value?>" data-validation="[L>=3]" data-validation-message="$ must be at least 3 characters">
+				<? } ?>
+
+
+				<div class="form-group">
+					<label class="form-label" for="validation"><?=__('main.type'); ?></label>
+					<select name="type" class="form-control" <?=$can_change_type ? '' : 'disabled'?>>
+						<option value=""><?=__('main.select')?></option>
+						<? foreach ($types as $val) { ?>
+							<option value="<?=$val?>"  <?=$can_change_type ? '' : 'class="disabled"'?> <?=$data->type == $val ? 'selected' : '' ?>>
+								<?=$val?>
+							</option>
+						<? } ?>
+					</select>
+				</div>
+
+				<?if($can_change_type) { ?>
+					<div class="form-group">
+						<label class="form-label" for="validation"><?=__('main.validation'); ?></label>
+						<select name="validation" class="form-control">
+							<option value=""><?=__('main.select')?></option>
+							<? foreach ($validation_types as $val) { ?>
+								<option value="<?=$val?>"  <?=$can_change_type ? '' : 'class="disabled"'?> <?=$data->validation == $val ? 'selected' : '' ?>>
+									<?=$val?>
+								</option>
+							<? } ?>
+						</select>
+					</div>
+				<? } ?>
+
+				<div class="form-actions">
+					<button type="submit" class="btn btn-success mr-2 px-5"><?=__('forms.save')?></button>
+				</div>
+
+				<? if ($saved) { ?>
+					<a class="btn btn-warning mr-2 px-5" href="<?=\helpers\html::url('/client_settings/apply_changes?message=updated')?>"><?=__('forms.apply_changes')?></a>
+				<? } ?>
+			</form>
+
+		</div>
+	</div>
+
+<? } ?>

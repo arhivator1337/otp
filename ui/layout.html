@@ -1,0 +1,391 @@
+<?php
+
+use helpers\html;
+use helpers\l10n;
+
+?>
+<!DOCTYPE html>
+<html lang="en" data-kit-theme="default">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1">
+	<meta http-equiv="x-ua-compatible" content="ie=edge">
+	<title>
+		<?=$app->exists('layout.title') ? $app->get('layout.title') : ''?>
+		<?=($page_title ? ': ' . $page_title : ''); ?>
+	</title>
+	<link rel="icon" type="image/png" href="/ui/components/kit/core/img/favicon.png" />
+	<? if($app->get('lang') == 'en') { ?>
+		<link href="https://fonts.googleapis.com/css?family=Mukta:400,700,800&display=swap" rel="stylesheet">
+	<? } else { ?>
+		<link href="https://fonts.googleapis.com/css2?family=Roboto+Sans:wght@200;300;600&display=swap" rel="stylesheet">
+	<? } ?>
+
+	<!-- VENDORS -->
+	<link rel="stylesheet" type="text/css" href="/ui/vendors/bootstrap/dist/css/bootstrap.css">
+	<link rel="stylesheet" type="text/css" href="/ui/vendors/perfect-scrollbar/css/perfect-scrollbar.css">
+	<link rel="stylesheet" type="text/css" href="/ui/vendors/ladda/dist/ladda-themeless.min.css">
+	<link rel="stylesheet" type="text/css" href="/ui/vendors/bootstrap-select/dist/css/bootstrap-select.min.css">
+	<link rel="stylesheet" type="text/css" href="/ui/vendors/select2/dist/css/select2.min.css">
+	<link rel="stylesheet" type="text/css"
+	      href="/ui/vendors/tempus-dominus-bs4/build/css/tempusdominus-bootstrap-4.min.css">
+	<link rel="stylesheet" type="text/css" href="/ui/vendors/fullcalendar/dist/fullcalendar.min.css">
+	<link rel="stylesheet" type="text/css" href="/ui/vendors/bootstrap-sweetalert/dist/sweetalert.css">
+	<link rel="stylesheet" type="text/css" href="/ui/vendors/summernote/dist/summernote.css">
+	<link rel="stylesheet" type="text/css" href="/ui/vendors/owl.carousel/dist/assets/owl.carousel.min.css">
+	<link rel="stylesheet" type="text/css" href="/ui/vendors/ionrangeslider/css/ion.rangeSlider.css">
+	<link rel="stylesheet" type="text/css"
+	      href="https://cdn.datatables.net/v/bs4/dt-1.10.18/fc-3.2.5/r-2.2.2/datatables.min.css" />
+	<link rel="stylesheet" type="text/css" href="/ui/vendors/c3/c3.min.css">
+	<link rel="stylesheet" type="text/css" href="/ui/vendors/chartist/dist/chartist.min.css">
+	<link rel="stylesheet" type="text/css" href="/ui/vendors/nprogress/nprogress.css">
+	<link rel="stylesheet" type="text/css" href="/ui/vendors/jquery-steps/demo/css/jquery.steps.css">
+	<link rel="stylesheet" type="text/css" href="/ui/vendors/dropify/dist/css/dropify.min.css">
+	<link rel="stylesheet" type="text/css" href="/ui/vendors/font-feathericons/dist/feather.css">
+	<link rel="stylesheet" type="text/css" href="/ui/vendors/font-linearicons/style.css">
+	<link rel="stylesheet" type="text/css" href="/ui/vendors/font-icomoon/style.css">
+	<link rel="stylesheet" type="text/css" href="/ui/vendors/font-awesome/css/font-awesome.min.css">
+
+	<script src="/ui/vendors/jquery/dist/jquery.min.js"></script>
+	<script src="/ui/vendors/popper.js/dist/umd/popper.js"></script>
+	<script src="/ui/vendors/jquery-ui/jquery-ui.min.js"></script>
+	<script src="/ui/vendors/bootstrap/dist/js/bootstrap.js"></script>
+	<script src="/ui/vendors/jquery-mousewheel/jquery.mousewheel.min.js"></script>
+	<script src="/ui/vendors/perfect-scrollbar/js/perfect-scrollbar.jquery.js"></script>
+	<script src="/ui/vendors/spin.js/spin.js"></script>
+	<script src="/ui/vendors/ladda/dist/ladda.min.js"></script>
+	<script src="/ui/vendors/bootstrap-select/dist/js/bootstrap-select.min.js"></script>
+	<script src="/ui/vendors/select2/dist/js/select2.full.min.js"></script>
+	<script src="/ui/vendors/html5-form-validation/dist/jquery.validation.min.js"></script>
+	<script src="/ui/vendors/jquery-typeahead/dist/jquery.typeahead.min.js"></script>
+	<script src="/ui/vendors/jquery-mask-plugin/dist/jquery.mask.min.js"></script>
+	<script src="/ui/vendors/autosize/dist/autosize.min.js"></script>
+	<script src="/ui/vendors/bootstrap-show-password/dist/bootstrap-show-password.min.js"></script>
+	<script src="/ui/vendors/moment/min/moment.min.js"></script>
+	<script src="/ui/vendors/tempus-dominus-bs4/build/js/tempusdominus-bootstrap-4.min.js"></script>
+	<script src="/ui/vendors/fullcalendar/dist/fullcalendar.min.js"></script>
+	<script src="/ui/vendors/bootstrap-sweetalert/dist/sweetalert.min.js"></script>
+	<script src="/ui/vendors/remarkable-bootstrap-notify/dist/bootstrap-notify.min.js"></script>
+	<script src="/ui/vendors/summernote/dist/summernote.min.js"></script>
+	<script src="/ui/vendors/owl.carousel/dist/owl.carousel.min.js"></script>
+	<script src="/ui/vendors/ionrangeslider/js/ion.rangeSlider.min.js"></script>
+	<script src="/ui/vendors/nestable/jquery.nestable.js"></script>
+	<script type="text/javascript"
+	        src="https://cdn.datatables.net/v/bs4/dt-1.10.18/fc-3.2.5/r-2.2.2/datatables.min.js"></script>
+	<script src="/ui/vendors/editable-table/mindmup-editabletable.js"></script>
+	<script src="/ui/vendors/d3/d3.min.js"></script>
+	<script src="/ui/vendors/c3/c3.min.js"></script>
+	<script src="/ui/vendors/chartist/dist/chartist.min.js"></script>
+	<script src="/ui/vendors/peity/jquery.peity.min.js"></script>
+	<script src="/ui/vendors/chartist-plugin-tooltips-updated/dist/chartist-plugin-tooltip.min.js"></script>
+	<script src="/ui/vendors/jquery-countTo/jquery.countTo.js"></script>
+	<script src="/ui/vendors/nprogress/nprogress.js"></script>
+	<script src="/ui/vendors/jquery-steps/build/jquery.steps.min.js"></script>
+	<script src="/ui/vendors/chart.js/dist/Chart.bundle.min.js"></script>
+	<script src="/ui/vendors/dropify/dist/js/dropify.min.js"></script>
+	<script src="/ui/vendors/d3-dsv/dist/d3-dsv.js"></script>
+	<script src="/ui/vendors/d3-time-format/dist/d3-time-format.js"></script>
+	<script src="/ui/vendors/techan/dist/techan.min.js"></script>
+	<script src="/ui/vendors/jqvmap/dist/jquery.vmap.js"></script>
+	<script src="/ui/vendors/jqvmap/dist/maps/jquery.vmap.usa.js" charset="utf-8"></script>
+
+	<script src="/ui/js/my.js"></script>
+
+	<!-- CLEAN UI PRO HTML ADMIN TEMPLATE MODULES-->
+	<link rel="stylesheet" type="text/css" href="/ui/components/kit/vendors/style.css">
+	<link rel="stylesheet" type="text/css" href="/ui/components/kit/core/style.css">
+	<link rel="stylesheet" type="text/css" href="/ui/components/cleanui/styles/style.css">
+	<link rel="stylesheet" type="text/css" href="/ui/components/kit/widgets/style.css">
+	<link rel="stylesheet" type="text/css" href="/ui/components/kit/apps/style.css">
+	<link rel="stylesheet" type="text/css" href="/ui/components/cleanui/ecommerce/style.css">
+	<link rel="stylesheet" type="text/css" href="/ui/components/cleanui/dashboards/style.css">
+	<link rel="stylesheet" type="text/css" href="/ui/components/cleanui/system/auth/style.css">
+
+	<link rel="stylesheet" type="text/css" href="/ui/components/cleanui/layout/breadcrumbs/style.css">
+	<link rel="stylesheet" type="text/css" href="/ui/components/cleanui/layout/footer/style.css">
+	<link rel="stylesheet" type="text/css" href="/ui/components/cleanui/layout/menu-left/style.css">
+	<link rel="stylesheet" type="text/css" href="/ui/components/cleanui/layout/menu-top/style.css">
+	<link rel="stylesheet" type="text/css" href="/ui/components/cleanui/layout/sidebar/style.css">
+	<link rel="stylesheet" type="text/css" href="/ui/components/cleanui/layout/support-chat/style.css">
+	<link rel="stylesheet" type="text/css" href="/ui/components/cleanui/layout/topbar/style.css">
+
+
+	<script src="/ui/components/kit/core/index.js"></script>
+	<script src="/ui/components/cleanui/layout/menu-left/index.js"></script>
+	<script src="/ui/components/cleanui/layout/menu-top/index.js"></script>
+	<script src="/ui/components/cleanui/layout/sidebar/index.js"></script>
+	<script src="/ui/components/cleanui/layout/support-chat/index.js"></script>
+	<script src="/ui/components/cleanui/layout/topbar/index.js"></script>
+
+	<link rel="stylesheet" type="text/css" href="/ui/css/my.css">
+
+	<!-- PRELOADER STYLES-->
+	<style>
+		<?if(in_array($lang, ['ru', 'ua'])) { ?>
+        :root {
+            --kit-color-primary: #4b7cf3;
+            --kit-font-family: 'Roboto', 'Helvetica Neue', 'Helvetica', sans-serif;
+            font-size: 0.9em;
+        }
+        html {
+            font-family: --kit-font-family;
+        }
+		<? } ?>
+		.initial__loading {
+			position: fixed;
+			z-index: 99999;
+			top: 0;
+			left: 0;
+			width: 100%;
+			height: 100%;
+			background-position: center center;
+			background-repeat: no-repeat;
+			background-image: url(data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDFweCIgIGhlaWdodD0iNDFweCIgIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgdmlld0JveD0iMCAwIDEwMCAxMDAiIHByZXNlcnZlQXNwZWN0UmF0aW89InhNaWRZTWlkIiBjbGFzcz0ibGRzLXJvbGxpbmciPiAgICA8Y2lyY2xlIGN4PSI1MCIgY3k9IjUwIiBmaWxsPSJub25lIiBuZy1hdHRyLXN0cm9rZT0ie3tjb25maWcuY29sb3J9fSIgbmctYXR0ci1zdHJva2Utd2lkdGg9Int7Y29uZmlnLndpZHRofX0iIG5nLWF0dHItcj0ie3tjb25maWcucmFkaXVzfX0iIG5nLWF0dHItc3Ryb2tlLWRhc2hhcnJheT0ie3tjb25maWcuZGFzaGFycmF5fX0iIHN0cm9rZT0iIzAxOTBmZSIgc3Ryb2tlLXdpZHRoPSIxMCIgcj0iMzUiIHN0cm9rZS1kYXNoYXJyYXk9IjE2NC45MzM2MTQzMTM0NjQxNSA1Ni45Nzc4NzE0Mzc4MjEzOCIgdHJhbnNmb3JtPSJyb3RhdGUoODQgNTAgNTApIj4gICAgICA8YW5pbWF0ZVRyYW5zZm9ybSBhdHRyaWJ1dGVOYW1lPSJ0cmFuc2Zvcm0iIHR5cGU9InJvdGF0ZSIgY2FsY01vZGU9ImxpbmVhciIgdmFsdWVzPSIwIDUwIDUwOzM2MCA1MCA1MCIga2V5VGltZXM9IjA7MSIgZHVyPSIxcyIgYmVnaW49IjBzIiByZXBlYXRDb3VudD0iaW5kZWZpbml0ZSI+PC9hbmltYXRlVHJhbnNmb3JtPiAgICA8L2NpcmNsZT4gIDwvc3ZnPg==);
+			background-color: #fff;
+		}
+
+		[data-kit-theme='dark'] .initial__loading {
+			background-color: #0c0c1b;
+		}
+	</style>
+
+	<script>
+        $(document).ready(function () {
+            $('.initial__loading').delay(100).fadeOut(100)
+        })
+	</script>
+
+</head>
+
+<body class="cui__layout--cardsShadow cui__menuLeft--dark cui__layout--cardsShadow">
+<div class="initial__loading"></div>
+<div class="cui__layout cui__layout--hasSider">
+
+	<div class="cui__menuLeft" style="z-index: 999999">
+		<div class="cui__menuLeft__mobileTrigger"><span></span></div>
+		<div class="cui__menuLeft__trigger"></div>
+		<div class="cui__menuLeft__outer">
+			<div class="cui__menuLeft__logo__container">
+				<div class="cui__menuLeft__logo">
+					<img src="/ui/components/kit/core/img/logo.svg" class="mr-2" alt="<?=$app->get('layout.title'); ?>" />
+					<div class="cui__menuLeft__logo__name"><?=__('main.title')?></div>
+					<div class="cui__menuLeft__logo__descr"><?=$app->get('user.client_name') ?: '' ?></div>
+				</div>
+			</div>
+			<div class="cui__menuLeft__scroll kit__customScroll">
+				<ul class="cui__menuLeft__navigation">
+				<?=\View::instance()->render('menu.html');?>
+				<div class="cui__menuLeft__banner">
+					<p><b><?=__('menu.renewal')?></b></p>
+					<p><?=__('menu.days_left')?><span class="badge badge-info ml-2">999+</span></p>
+					<a
+							href="#"
+							target="_blank"
+							rel="noopener noreferrer"
+							class="btn btn-sm btn-success btn-rounded px-3"
+					><?=__('menu.add_funds')?></a
+					>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="cui__menuLeft__backdrop"></div>
+
+	<div class="cui__layout">
+		<div class="cui__layout__header">
+			<div class="cui__topbar">
+				<div class="mr-4">
+					<div name="cui__breadcrumbs" style="font-size: 1.13rem">
+						<div class="cui__breadcrumbs__path">
+							<?=html::url('/dashboard', __('menu.home'));?>
+							<? if(is_array($breadcrumb['top'])) {
+								$last = count($breadcrumb['top']);
+								foreach ($breadcrumb['top'] as $id => $bread) { ?>
+									<span>
+										<span class="cui__breadcrumbs__arrow"></span>
+										 <? if ($key != $last) { ?>
+											<span> <?=html::url($bread['link'] == '' ? '#' : $bread['link'], $bread['name'])?>
+										 <? } else { ?>
+											 <strong class="cui__breadcrumbs__current"><?=$bread['name']?></strong>
+										 <? } ?>
+										</span>
+									</span>
+								<? } ?>
+							<? } ?>
+						</div>
+					</div>
+				</div>
+				<div class="mr-auto">
+					<div class="cui__topbar__livesearch">
+<? /*
+						<button class="cui__topbar__livesearch__close" type="button">
+							<i class="icmn-cross"></i>
+						</button>
+						<div class="container-fluid">
+							<div class="cui__topbar__livesearch__wrapper">
+								<input
+										type="text"
+										id="livesearch__input__inner"
+										class="cui__topbar__livesearch__input"
+										placeholder="Type to search..."
+								/>
+								<ul class="cui__topbar__livesearch__options">
+									<li class="cui__topbar__livesearch__option">
+										<label class="kit__utils__control kit__utils__control__checkbox">
+											<input type="checkbox" checked="checked" />
+											<span class="kit__utils__control__indicator"></span>
+											Search within page
+										</label>
+									</li>
+									<li class="cui__topbar__livesearch__option">Press enter to search</li>
+								</ul>
+							</div>
+						</div>
+ */ ?>
+					</div>
+				</div>
+				<div class="cui__topbar__actionsDropdown dropdown mr-4 d-none d-sm-block">
+				</div>
+				<div class="dropdown mr-4 d-none d-sm-block">
+					<a href="" class="dropdown-toggle text-nowrap" data-toggle="dropdown" data-offset="5,15">
+						<span class="dropdown-toggle-text"><?=strtoupper($lang)?></span>
+					</a>
+					<div class="dropdown-menu dropdown-menu-right" role="menu">
+						<? foreach ($app->get('languages') as $lang) { ?>
+							<a class="dropdown-item " href="<?=$app->get('lang_base_url.' . $lang) . $current_url?>"><span class="text-uppercase font-size-12 mr-1"><?=strtoupper($lang)?></span><?=__('langfull.' . $lang)?></a>
+						<? } ?>
+					</div>
+				</div>
+
+				<div class="dropdown">
+
+					<a
+							href=""
+							class="dropdown-toggle text-nowrap"
+							data-toggle="dropdown"
+							aria-expanded="false"
+							data-offset="5,15"
+					>
+						<span style="font-size: 1.3rem"><?=$user['name']?></span>
+						<img
+								class="dropdown-toggle-avatar"
+
+								src="/ui/components/kit/core/img/avatars/avatar-2.png"
+								alt="avatar"
+						/>
+
+						<!--	src="http://tinygraphs.com/isogrids/<?=$user['name']?>?theme=seascape&numcolors=4&size=40&fmt=png"-->
+					</a>
+
+					<div class="dropdown-menu dropdown-menu-right" role="menu">
+
+						<? if(isset($profiler)) { ?>
+							<a class="dropdown-item"  data-toggle="modal" data-target=".bd-example-modal-lg">
+								<i class="dropdown-icon fe fe-list"></i> <?=__('menu.profiler')?>
+							</a>
+
+							<div class="dropdown-divider"></div>
+						<? } ?>
+						<a class="dropdown-item"  data-toggle="modal" data-target=".bd-example-modal-lg">
+							<i class="dropdown-icon fe fe-hash"></i> <?=__('menu.system')?> : <?=$user['id']?>.c<?=$client_id?>.v3
+						</a>
+
+						<? //<a href="/user/set_language/en">En</a> ?>
+						<div class="dropdown-divider"></div>
+
+						<a class="dropdown-item" href="<?=html::url('/user/logout');?>">
+							<i class="dropdown-icon fe fe-log-out"></i> <?=__('menu.logout')?>
+						</a>
+
+
+					</div>
+				</div>
+			</div>
+
+		</div>
+
+		<div class="cui__layout__content">
+
+			<div class="cui__utils__content">
+				<? if ($error) { ?>
+					<div class="alert-danger alert" role="alert">
+						<?=$error?>
+					</div>
+				<? } elseif($message) { ?>
+					<div class="alert alert-success" role="alert">
+						<?=$message?>
+					</div>
+				<? } ?>
+
+				<!-- content -->
+				<?=(strpos(Base::instance()->get('content'), '.html') === false) ? $content : $this->render(Base::instance()->get('content'));?>
+
+				<? if($toast_message) { ?>
+				<div  class=" d-flex flex-column p-4" style="position: absolute; position: fixed; top: 1em; right: 1em; min-width: 3em">
+
+					<div class="toast" style="background:#00c851" role="alert" aria-live="assertive" aria-atomic="true" data-delay="1000">
+						<div class="toast-success">
+							<div class="toast-body text-white" style="font-size: 1.25em; margin-left:1.7em">
+								<?=$toast_message?>
+								<button type="button" class="ml-2 mb-1 close" data-dismiss="toast" aria-label="Close">
+									<span aria-hidden="true">&times;</span>
+								</button>
+							</div>
+						</div>
+					</div>
+				</div>
+				<? } ?>
+				<? if(1 == 2) { ?>
+					<div id="toast-container" class="toast md-toast-top-right" style="top:5em;" aria-live="polite" role="alert" data-delay="1000000">
+						<div class="md-toast md-toast-success" style="">
+							<button type="button" class="md-toast-close-button" role="button" class="ml-2 mb-1 close" data-dismiss="toast" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+							<div class="md-toast-message">I do not think that means what you think it means.</div>
+						</div>
+					</div>
+				<? } ?>
+
+				<?=$this->render('js.html');?>
+				<!-- end content -->
+			</div>
+		</div>
+
+		<div class="cui__layout__footer">
+			<div class="cui__footer">
+				<div class="cui__footer__inner">
+					<div class="mb-0 mx-2 my-2 h-25 d-inline-block" style="vertical-align: top;">
+						Generated: <?=round(microtime(true) - Base::instance()->get('start_time'), 4); ?> |
+						Timezone: <?=$app->get('settings.timezone')?>; Server time: <?=date('Y-m-d H:i:s');?> |
+						Dialer: <span style="border-radius: 4px;margin: 0 2px 0 0px; padding: 0 4px 0 4px"
+							<? if($app->get('settings.service_status') == 1) { ?>
+						        class="alert-success">ON
+							<? } else { ?>
+								class="alert-danger">OFF
+							<? } ?>
+						</span>
+						Copyright © 2020-<?=date('Y')?>
+				</div>
+			</div>
+
+		</div>
+	</div>
+</div>
+
+<? if(isset($profiler)) { ?>
+	<div class="modal fade bd-example-modal-lg"  style="max-width:100% !important" tabindex="-1" role="dialog" aria-labelledby="myLargeModmyModalalLabel" id="" aria-hidden="true" >
+		<div class="modal-dialog modal-lg">
+			<div class="modal-content" style="width:1000px;">
+				<? foreach($profiler as $p) { ?>
+					<p class="pt-1 mx-1"><?=$p?></p>
+				<? } ?>
+
+				<? if(!empty(Base::instance()->get('log'))) { ?>
+					<? foreach(Base::instance()->get('log') as $id => $val) { ?>
+						<p class="pt-1 mx-1"><?=$id?>. <?=$val?></p>
+					<? } ?>
+				<? } ?>
+			</div>
+		</div>
+	</div>
+<? } ?>
+</body>
+</html>
