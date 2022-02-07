@@ -84,11 +84,16 @@ task('deploy:info', function () {
 		return get('deploy_dir'); // . 'production';
 	});
 
-	$dir = explode('/', get('deploy_path'));
-	$dir = end($dir);
-	out($dir);
-	set('deploy_type', $dir);
-	set('production_only', $dir == 'production' or $dir == 'current' ? true : false);
+	$dirs = explode('/', get('deploy_path'));
+	foreach ($dirs as $dir) {
+		if($dir != '')
+			$new_dir[] = $dir;
+	}
+
+	$deploy_type = $new_dir[count($new_dir)-2] ?: 'dev';
+
+	set('deploy_type', $deploy_type);
+	set('production_only',  $deploy_type == 'production' ? 'production_only' : $deploy_type);
 
 	set('branch', function () {
 		if (input()->hasOption('b')) {
@@ -102,7 +107,7 @@ task('deploy:info', function () {
 		return 'main';
 	});
 
-	out("Start deploy: {{application}} | {{branch}} | {{deploy_path}} | {{config_path}} {{deploy_type}} {{production_only}}" . $tag, BG_GREEN);
+	out("Start deploy app: {{application}} | branch: {{branch}} | path:{{deploy_path}} | cfg: {{config_path}} | deploy_type: {{deploy_type}} | {{production_only}}; tag:" . $tag, BG_GREEN);
 });
 
 task('restart_env', function () {
