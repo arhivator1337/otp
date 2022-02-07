@@ -35,10 +35,16 @@ class html {
 	}
 
 	public static function to_json($array, $profiler = []) {
-		for ($i = 0; $i < count($array); $i++) {
+		$ret = [];
+		for ($i = 0; $i < count($array); $i++)
 			$arr[] = $array[$i];
-		}
-		return json_encode(['data' => $arr, 'profiler' => $profiler]);
+
+		if(!empty($profiler))
+			$ret['profiler'] = $profiler;
+
+		$ret['data'] = $arr;
+
+		return json_encode($ret);
 	}
 
 
