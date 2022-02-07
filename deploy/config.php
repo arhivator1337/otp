@@ -109,9 +109,9 @@ task('restart_env', function () {
 		return out(dep::$vars['mess_prod_only'], BG_YELLOW);
 
 	if(file_exists('/.dockerenv')) {
-		run('supervisorctl restart manager');
-		run('supervisorctl restart ravan:*');
-		out("Docker: Supervisor ravan group restarted", BG_GREEN);
+//		run('supervisorctl restart manager');
+		run('supervisorctl restart otp:*');
+		out("Docker: Supervisor opt group restarted", BG_GREEN);
 	}
 	else {
 		run('service php7.2-fpm restart');
