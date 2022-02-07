@@ -32,7 +32,14 @@ define('BG_YELLOW', 43);
 //	];
 //}
 
-set('application', $dep['app']);
+
+class dep {
+	static $vars = [];
+}
+
+dep::$vars = $dep;
+
+set('application', dep::$vars['app']);
 set('shared_files', ['env.ini', 'app/migration/migration.log', 'composer.json']); //symlink to copy whole dir //, 'composer.lock'
 set('shared_dirs', ['sounds', 'app/ravan/supervisor_conf']);
 set('repository', 'git@github.com:arhivator1337/otp.git');
