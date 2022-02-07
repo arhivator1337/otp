@@ -22,7 +22,7 @@ define('BG_YELLOW', 43);
 class dep {
 	static $vars = [
 		'app' => 'otp',
-		'base_dir' => '/var/www/otp',
+		'base_dir' => '/var/www/otp/',
 		'branches' => ['master', 'dev'],
 		'dir' => ['dev', 'production', 'stage'],
 		'mess_prod_only' => 'Task blocked. Production only',
@@ -81,13 +81,14 @@ task('deploy:info', function () {
 			if (!empty(input()->getArgument('dir')))
 				return get('deploy_dir') . askChoice('Choose dir:', dep::$vars['dir'], null);
 		}
-		return get('deploy_dir') . 'production';
+		return get('deploy_dir'); // . 'production';
 	});
 
 	$dir = explode('/', get('deploy_path'));
 	$dir = end($dir);
+	out($dir);
 	set('deploy_type', $dir);
-	set('production_only', $dir == 'production' ? true : false);
+	set('production_only', $dir == 'production' or $dir == 'current' ? true : false);
 
 	set('branch', function () {
 		if (input()->hasOption('b')) {
@@ -98,7 +99,7 @@ task('deploy:info', function () {
 			elseif(!empty(input()->getOption('b')))
 				return input()->getOption('b');
 		}
-		return 'master';
+		return 'main';
 	});
 
 	out("Start deploy: {{application}} | {{branch}} | {{deploy_path}} | {{config_path}} {{deploy_type}} {{production_only}}" . $tag, BG_GREEN);
