@@ -14,9 +14,15 @@ class numbers_model extends \models\Model {
 	}
 
 	public function get_all_stats($params = []) {
-		$numbers = $this->query_gen("SELECT *, req.date as req_date, n.date as origin_date from {$this->tbl_numbers} as n left join {$this->tbl_number_requests} as req on req.number_id = n.id left join otp_ranges as ran on ran.id = n.range_id %where% order by n.id desc, req.id desc limit :limit",
-			['limit' => $params['limit'], 'ran.partner_id = :partner_id' => $params['partner_id'], 'country_id IN (:country_id)' => $params['country_id']]);
-		return $numbers;
+		return $this->query_gen("SELECT *, req.date as req_date, n.date as origin_date from {$this->tbl_numbers} as n left join {$this->tbl_number_requests} as req on req.number_id = n.id left join otp_ranges as ran on ran.id = n.range_id %where% order by n.id desc, req.id desc limit :limit",
+			['limit' => $params['limit'], 'ran.partner_id IN (:partner_id)' => $params['partner_id']]);
+	}
+
+	public function get_all_stats_unique_numbers($params = []) {
+		return $this->query_gen("SELECT *, n.date as origin_date from {$this->tbl_numbers} as n left join otp_ranges as ran on ran.id = n.range_id %where% order by n.id desc limit :limit",
+			['limit' => $params['limit'], 'ran.partner_id IN (:partner_id)' => $params['partner_id'], 'date >= :date_start' => $params['date_start'], 'date <= :date_finish' => $params['date_finish']]
+		, 0
+		);
 	}
 
 	public function insert_num_request($number_id, $type = 0) {

@@ -39,6 +39,7 @@
 					</select>
 				</div>
 
+				<!--
 				<div class="form-group col-md-6">
 					<label for="ranges">Ranges</label>
 					<?$data['ranges'] = !empty($data['ranges']) ? array_flip($data['ranges']) : [];  ?>
@@ -50,7 +51,7 @@
 							</option>
 						<? } */ ?>
 					</select>
-				</div>
+				</div> -->
 
 				<!-- ><div class="form-group col-md-6">
 					<label for="Status"><?=__('main.status')?></label>
@@ -136,9 +137,6 @@
 
 <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/handsontable@11.0.1/dist/handsontable.full.min.css">
 <script src="https://cdn.jsdelivr.net/npm/handsontable@11.0.1/dist/handsontable.full.min.js"></script>
-
-<!--<link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/handsontable@latest/dist/handsontable.fulmain.min.css">-->
-<!--<script src="https://cdn.jsdelivr.net/npm/handsontable@latest/dist/handsontable.fulmain.min.js"></script>-->
 
 <script>
 	var pagination_url = '<?=$pagination_url?>';
@@ -253,7 +251,7 @@
                 {
                     data: 'req_date',
                     type: 'text',
-                    dateFormat: 'YYYY/MM/DD/ HH:MM:SS',
+                    //dateFormat: 'YYYY/MM/DD/ HH:MM:SS',
                 },
                 {
                     data: 'partner',
