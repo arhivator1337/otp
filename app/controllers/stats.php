@@ -39,14 +39,10 @@ class stats extends \controllers\Controller {
 		$param['date_start'] = strtotime($param['date_start']);
 		$param['date_finish'] = strtotime($param['date_finish']);
 
-		if($param['unique_numbers'])
-			$data = \numbers_model::instance()->get_all_stats_unique_numbers($param);
-		else
-			$data = \numbers_model::instance()->get_all_stats($param);
+		$data = \numbers_model::instance()->get_all_stats($param);
 
 		$ranges = arr::map_key_val(\ranges_model::instance()->get_ranges(), 'short_code', 'partner_id');
 		$used_numbers = $new_data = [];
-
 
 		for ($i = 0; $i < count($data); $i++) {
 			$arr = [];
@@ -60,6 +56,7 @@ class stats extends \controllers\Controller {
 			$arr['origin_date'] = date($app->get('date_template'), $data[$i]['origin_date']);
 			if(!empty($data[$i]['req_date']))
 				$arr['req_date'] = date($app->get('date_template'), $data[$i]['req_date']);
+
 			$arr['number'] = $data[$i]['number'];
 			$used_numbers[] = $data[$i]['number'];
 			$new_data[] = $arr;
