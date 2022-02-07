@@ -4,13 +4,12 @@ namespace Deployer;
 require_once 'recipe/common.php';
 
 $cfg_file = 'config.php';
-$project_dir = dirname(__DIR__, 1) . DIRECTORY_SEPARATOR;
-$git_deployed_config = 'production/current/deploy/' . $cfg_file;
+$dep = require_once 'vars.php';
 
-$config_path = file_exists($project_dir . $git_deployed_config) ? $project_dir . $git_deployed_config :  __DIR__ . DIRECTORY_SEPARATOR . $cfg_file;
+$cfg_file = file_exists($dep['base_dir'] . 'production/' . $dep['local_config_dir'] . $cfg_file) ? $dep['base_dir'] . 'production/' . $dep['local_config_dir'] . $cfg_file : __DIR__ . DIRECTORY_SEPARATOR . $cfg_file;
 $config_path = $cfg_file;
 require $config_path;
 
 set('config_path', $config_path);
-set('deploy_path', $project_dir . 'production');
-set('deploy_dir', $project_dir );
+set('deploy_path', $dep['base_dir'] . 'production');
+set('deploy_dir', $dep['base_dir'] );

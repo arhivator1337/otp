@@ -11,6 +11,7 @@ option('migration', null, InputOption::VALUE_OPTIONAL, 'Migrate or not', false);
 //https://www.hashbangcode.com/article/adding-arguments-and-options-deployer-tasks
 
 require_once 'recipe/deploy/check_remote.php';
+$dep = require_once 'vars.php';
 
 define('RED', 31);
 define('BG_RED', 41);
@@ -19,17 +20,19 @@ define('BG_GREEN', 42);
 define('YELLOW', 33);
 define('BG_YELLOW', 43);
 
-class dep {
-	static $vars = [
-		'app' => 'otp',
-		'base_dir' => '/var/www/otp/',
-		'branches' => ['master', 'dev'],
-		'dir' => ['dev', 'production', 'stage'],
-		'mess_prod_only' => 'Task blocked. Production only',
-	];
-}
+//class dep {
+//	static $vars = [
+//		'app' => 'otp',
+//		'base_dir' => '/var/www/otp/',
+//		'local_config_dir' => 'current/deploy/',
+////		'config_dir' => '/var/www/otp/production/current/deploy',
+//		'branches' => ['master', 'dev'],
+//		'dir' => ['dev', 'production', 'stage'],
+//		'mess_prod_only' => 'Task blocked. Production only',
+//	];
+//}
 
-set('application', dep::$vars['app']);
+set('application', $dep['app']);
 set('shared_files', ['env.ini', 'app/migration/migration.log', 'composer.json']); //symlink to copy whole dir //, 'composer.lock'
 set('shared_dirs', ['sounds', 'app/ravan/supervisor_conf']);
 set('repository', 'git@github.com:arhivator1337/otp.git');
@@ -116,8 +119,8 @@ task('restart_env', function () {
 
 	if(file_exists('/.dockerenv')) {
 //		run('supervisorctl restart manager');
-		run('supervisorctl restart otp:*');
-		out("Docker: Supervisor opt group restarted", BG_GREEN);
+//		run('supervisorctl restart otp:*');
+//		out("Docker: Supervisor opt group restarted", BG_GREEN);
 	}
 	else {
 		run('service php7.2-fpm restart');
