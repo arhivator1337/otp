@@ -59,7 +59,7 @@ class api_v2 extends \application{
 	}
 
 	private function profiler() {
-		$data = explode("\n", $this->app->get('db')->log());
+		return explode("\n", $this->app->get('db')->log());
 	}
 
 	private function generateRandomString($length = 16) {
@@ -104,6 +104,97 @@ class api_v2 extends \application{
 			} else
 				$generated = $this->generate_number($ranges); //type 1 generate from range
 		}
+
+
+		if(empty($generated))
+			$this->message->add('generation_error', __function__, 'api_v2 number generation');
+
+		$proxy = $this->get_proxy($generated['country_id']);
+		if($proxy['error']) {
+			$error = $proxy['error'];
+			$this->message->add('proxy_error', __function__, 'api_v2 proxy generation', print_r($proxy, 1));
+		}
+//
+		if(!$error) {
+			$names = new \controllers\system\name_generator();
+
+			if(!($tier = $this->app->get('name_country_group')[$generated['country_id']])) //['group'];
+				$this->message->add('generation_error', __function__, 'country_id:' . $generated['country_id'] . ' has no name_country_group');
+
+			$name = $names->generate_name($tier, 'all', 1)[0];
+			$name_arr = explode(' ', $name);
+
+			$nickname = $names->generate_nickname(1, $name_arr[mt_rand(0,1)])[0];
+			$user_agent = $names->generate_user_agents();
+			$data = [
+				'number' => '+' . $generated['number'],
+				'proxy' => "{$proxy['login']}:{$proxy['pass']}@{$proxy['ip']}:{$proxy['port']}",
+				'name' => $name,
+				'nickname' => $nickname,
+				'nickname2' => $nickname . mt_rand(0, 999),
+				'user_agent' => $user_agent,
+			];
+
+			$extra = [
+				'proxy_is_mobile' => $proxy['mobile'],
+				'proxy_is_proxy' => $proxy['proxy'],
+				'proxy_is_hosting' => $proxy['hosting'],
+			];
+
+			$number_id = $numbers_model->save_number($generated['number'], $generated['range_id'], $generated['type']);
+			(new \numbers_data_model())->save_number_data($number_id, $proxy['id'], $proxy['query'], $proxy['countryCode'], $user_agent, "{$name} ({$tier})", $nickname, serialize($extra));
+
+			if($generated['type'] == 2) //list
+				$ranges_model->update_number_from_list($generated['number_id'], 0);
+
+			$this->profiler();
+
+			$this->log('get_number: ' . '+' . print_r($data, 1));
+			$this->answer(true, $data);
+		}
+		else {
+			$this->answer(false, ['error' => $error]);
+		}
+
+	}
+
+	public function get_data2() {
+		$ranges_model = new \ranges_model();
+		$numbers_model = new \numbers_model();
+		$settings = $this->import_client_settings($this->client_id);
+
+		$ranges = $ranges2 = [];
+
+		if($settings['numbers_from_ranges'])
+			$ranges = $ranges_model->get_random_range(1);
+
+		if ($settings['numbers_from_list']) //type 2 get from list
+			$ranges2 = arr::map_id_nested($ranges_model->get_number_list(1, null, null, 1, 0), 'group_id');
+echo '<pre>';
+print_r($ranges);
+echo '</pre>';
+		$merged = array_merge($ranges, $ranges2);
+
+		if(count($merged) == 0) {
+			$error = 'no ranges';
+			$this->message->add('generation_error', __function__, 'api_v2 no active ranges');
+		}
+
+		if(!empty($merged)) {
+			$random = $merged[mt_rand(0, count($merged) - 1)];
+
+			if (is_array($random[0])) {
+				$rand = $random[mt_rand(0, count($random) - 1)];
+				$generated = array_merge($rand, ['type' => 2, 'country_id' => $rand['country_id']]);
+			} else
+				$generated = $this->generate_number($ranges); //type 1 generate from range
+		}
+		echo '<pre>';
+		print_r($generated);
+		echo '</pre>';
+		echo '<pre>';
+		print_r($this->app->get('name_country_group'));
+		echo '</pre>';
 
 
 		if(empty($generated))
