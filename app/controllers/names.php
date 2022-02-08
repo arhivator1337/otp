@@ -15,10 +15,10 @@ class names extends \controllers\Controller {
 	public function index(\Base $app, $param) {
 
 		foreach (array_keys($this->names->names) as $tier)
-			$links["/names/get_names/{$tier}/all/10000"] = $tier . ' all 10k';
+			$links["/names/get_names/{$tier}/all/5000"] = $tier . ' all 5k';
 
-		$links['/names/generate_nicknames/10000'] = 'Nicknames';
-		$links['/names/generate_user_agents/10000'] = 'User Agents';
+		$links['/names/generate_nicknames/8000'] = 'Nicknames';
+		$links['/names/generate_user_agents/8000'] = 'User Agents';
 
 		$app->mset([
 			'content' => 'names.html',

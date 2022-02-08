@@ -54,3 +54,16 @@ if (!function_exists('array_key_first')) {
 		return NULL;
 	}
 }
+
+if (!function_exists('mb_ucfirst')) {
+	function mb_ucfirst($string) {
+		return mb_strtoupper(mb_substr($string, 0, 1)) . mb_substr($string, 1);
+	}
+}
+
+if (!function_exists('mb_lcfirst')) {
+	function mb_lcfirst($str) {
+		$first = mb_strtolower(mb_substr($str, 0, 1));
+		return $first . mb_substr($str, 1, null);
+	}
+}

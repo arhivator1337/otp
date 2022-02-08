@@ -67,7 +67,7 @@ class name_generator {
 					$this->names[$tier][$gender][mt_rand(0, $data[$tier][$gender . '_count'])] . ' ' .
 					($data[$tier]['lastname_prefix'] ? $this->names[$tier]['lastname_prefix'][mt_rand(0, $data[$tier]['lastname_prefix'] )] : '');
 
-				$_name = $this->rand(1, $_name, l10n::unaccent($_name));
+				$_name = $this->rand(1, $_name, $_name); //l10n::unaccent(
 
 					if(!empty($this->names[$tier]['lastname']))
 						$_lastname = $this->names[$tier]['lastname'][mt_rand(0, $data[$tier]['lastname_count'] )];
@@ -75,7 +75,7 @@ class name_generator {
 						$_lastname = $this->names[$tier]['lastname_' . $gender][mt_rand(0, $data[$tier]["lastname_{$gender}_count"] )];
 					//. ' ' . $gender . ' : '.$tier;
 
-				$_lastname = $this->rand(1, $_lastname, l10n::unaccent($_lastname));
+				$_lastname = $this->rand(1, $_lastname, $_lastname); //l10n::unaccent(
 
 				$name[] = $this->randomize_case($_name . $_lastname);
 			}
@@ -149,17 +149,20 @@ class name_generator {
 	}
 
 	private function randomize_case($text) {
-		$case_rand = mt_rand(0, 5);
+		$case_rand = mt_rand(0, 6);
 
 		if($case_rand == 1)
-			$text = strtolower($text);
+			$text = mb_strtolower($text);
 		elseif($case_rand == 2)
-			$text = ucwords(strtolower($text));
+			$text = mb_convert_case(mb_strtolower($text), MB_CASE_TITLE);
 		elseif($case_rand == 3)
-			$text = ucfirst(strtolower($text));
+			$text = mb_ucfirst(mb_strtolower($text));
 		elseif($case_rand == 4)
-			$text = lcfirst($text);
-		//5 do nothing
+			$text = mb_convert_case($text, MB_CASE_LOWER);
+		elseif($case_rand == 5)
+			$text = mb_lcfirst(mb_convert_case(mb_strtolower($text), MB_CASE_TITLE));
+
+		//6 do nothing
 
 		return $text;
 	}
