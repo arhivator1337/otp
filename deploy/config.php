@@ -20,12 +20,26 @@ define('BG_GREEN', 42);
 define('YELLOW', 33);
 define('BG_YELLOW', 43);
 
+//class dep {
+//	static $vars = [
+//		'app' => 'otp',
+//		'base_dir' => '/var/www/otp/',
+//		'local_config_dir' => 'current/deploy/',
+////		'config_dir' => '/var/www/otp/production/current/deploy',
+//		'branches' => ['master', 'dev'],
+//		'dir' => ['dev', 'production', 'stage'],
+//		'mess_prod_only' => 'Task blocked. Production only',
+//	];
+//}
+
+
 class dep {
 	static $vars = [];
 }
 
 dep::$vars = $dep;
 
+set('deploy_dir', $dep['base_dir']);
 set('application', dep::$vars['app']);
 set('shared_files', ['env.ini', 'app/migration/migration.log', 'composer.json']); //symlink to copy whole dir //, 'composer.lock'
 set('shared_dirs', ['sounds', 'app/ravan/supervisor_conf']);
@@ -36,7 +50,8 @@ set('writable_mode', 'chmod');
 set('writable_chmod_mode', '777');
 set('writable_dirs', ['tmp', 'tmp/cache/', 'sounds', '/tmp/otp/', 'app/migration/', 'app/otp/supervisor_conf/']);
 set('allow_anonymous_stats', false);
-set('deploy_path', $dep['base_dir'] . '/production');
+
+
 
 task('deploy', [
 	'deploy:info',
@@ -79,7 +94,7 @@ task('deploy:info', function () {
 			if (!empty(input()->getArgument('dir')))
 				return get('deploy_dir') . askChoice('Choose dir:', dep::$vars['dir'], null);
 		}
-		return get('deploy_dir'); // . 'production';
+		return get('deploy_dir') . '/production';
 	});
 
 	$dirs = explode('/', get('deploy_path'));

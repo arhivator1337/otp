@@ -13,5 +13,5 @@ $config_path = $cfg_file;
 require $config_path;
 
 set('config_path', $config_path);
-set('deploy_path', $dep['base_dir'] . 'production');
-set('deploy_dir', $dep['base_dir'] );
+//set('deploy_path', $dep['base_dir'] . '/production');
+//set('deploy_dir', $dep['base_dir'] );
