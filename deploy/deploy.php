@@ -5,13 +5,7 @@ namespace Deployer;
 $dep = include 'vars.php';
 require_once 'recipe/common.php';
 
-$cfg_file = 'config.php';
+$config = 'config.php';
 
-$cfg_file = file_exists($dep['base_dir'] . 'production/' . $dep['local_config_dir'] . $cfg_file) ? $dep['base_dir'] . 'production/' . $dep['local_config_dir'] . $cfg_file : __DIR__ . DIRECTORY_SEPARATOR . $cfg_file;
-$config_path = $cfg_file;
-
-require $config_path;
-
+require $config_path = file_exists($dep['base_dir'] . '/production/' . $dep['local_config_dir'] . $config) ? $dep['base_dir'] . '/production/' . $dep['local_config_dir'] . $config : __DIR__ . DIRECTORY_SEPARATOR . $config;
 set('config_path', $config_path);
-//set('deploy_path', $dep['base_dir'] . '/production');
-//set('deploy_dir', $dep['base_dir'] );
