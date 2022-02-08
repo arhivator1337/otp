@@ -99,8 +99,10 @@ task('deploy:info', function () {
 		if($dir != '')
 			$new_dir[] = $dir;
 	}
-
-	$deploy_type = $new_dir[count($new_dir)-2] ?: 'dev';
+	if(!empty($new_dir))
+		$deploy_type = $new_dir[count($new_dir)-2] ?: 'dev';
+	else
+		$deploy_type = 'dev';
 
 	set('deploy_type', $deploy_type);
 	set('production_only',  $deploy_type == 'production' ? 'production_only' : $deploy_type);
@@ -128,12 +130,13 @@ task('restart_env', function () {
 //		run('supervisorctl restart manager');
 //		run('supervisorctl restart otp:*');
 //		out("Docker: Supervisor opt group restarted", BG_GREEN);
+		run('supervisorctl restart php-fpm');
+//		out("Docker: Supervisor opt group restarted", BG_GREEN);
 	}
 	else {
 		run('service php7.2-fpm restart');
 		out("PHP is restarted", BG_RED);
 	}
-	//run('supervisorctl restart php-fpm');
 });
 
 task('deploy:migrations', function () {
