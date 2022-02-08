@@ -20,14 +20,9 @@ class messages extends \application {
 			$message = 'wrong type: ' . $type . '; ' . $message;
 		}
 
-		echo "<b>{$type}: {$module}: {$message}. Is fatal:{$fatal}</b><br>";
-
 		$this->model->add_message($_type, $module, $message, $fatal);
-
-		if($fatal == 1) {
-			echo $message . ' fatal!';
-			die;
-		}
+		if($fatal == 1) 
+			return false;
 
 		return true;
 	}
