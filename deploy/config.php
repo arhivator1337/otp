@@ -41,7 +41,7 @@ dep::$vars = $dep;
 
 set('deploy_dir', $dep['base_dir']);
 set('application', dep::$vars['app']);
-set('shared_files', ['env.ini', 'app/migration/migration.log', 'composer.json']); //symlink to copy whole dir //, 'composer.lock'
+set('shared_files', ['env.ini', 'app/migration/migration.log', 'composer.json', 'tmp/cookies.txt']); //symlink to copy whole dir //, 'composer.lock'
 set('shared_dirs', ['sounds', 'app/ravan/supervisor_conf']);
 set('repository', 'git@github.com:arhivator1337/otp.git');
 set('git_tty', true);
@@ -50,7 +50,6 @@ set('writable_mode', 'chmod');
 set('writable_chmod_mode', '777');
 set('writable_dirs', ['tmp', 'tmp/cache/', 'sounds', '/tmp/otp/', 'app/migration/', 'app/otp/supervisor_conf/']);
 set('allow_anonymous_stats', false);
-
 
 
 task('deploy', [
