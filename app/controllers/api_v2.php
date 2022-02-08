@@ -90,29 +90,36 @@ class api_v2 extends \application{
 
 		$merged = array_merge($ranges, $ranges2);
 
-		$random = $merged[mt_rand(8, count($merged)-1)];
-
-		if(is_array($random[0])) {
-			$rand = $random[mt_rand(0, count($random) - 1)];
-			$generated = array_merge($rand, ['type' => 2, 'country_id' => $rand['country_id']]);
+		if(count($merged) == 0) {
+			$error = 'no ranges';
+			$this->message->add('generation_error', __function__, 'api_v2 no active ranges');
 		}
-		else
-			$generated = $this->generate_number($ranges); //type 1 generate from range
+
+		if(!empty($merged)) {
+			$random = $merged[mt_rand(0, count($merged) - 1)];
+
+			if (is_array($random[0])) {
+				$rand = $random[mt_rand(0, count($random) - 1)];
+				$generated = array_merge($rand, ['type' => 2, 'country_id' => $rand['country_id']]);
+			} else
+				$generated = $this->generate_number($ranges); //type 1 generate from range
+		}
+
 
 		if(empty($generated))
-			$this->message->add('generation_error', 'api_v2 number generation');
+			$this->message->add('generation_error', __function__, 'api_v2 number generation');
 
 		$proxy = $this->get_proxy($generated['country_id']);
 		if($proxy['error']) {
 			$error = $proxy['error'];
-			$this->message->add('proxy_error', 'api_v2 proxy generation', print_r($proxy, 1));
+			$this->message->add('proxy_error', __function__, 'api_v2 proxy generation', print_r($proxy, 1));
 		}
 //
 		if(!$error) {
 			$names = new \controllers\system\name_generator();
 
 			if(!($tier = $this->app->get('name_country_group')[$generated['country_id']])) //['group'];
-				$this->message->add('generation_error', 'api_v2 name group', ' country_id:' . $generated['country_id'] . ' has no name_country_group');
+				$this->message->add('generation_error', __function__, 'country_id:' . $generated['country_id'] . ' has no name_country_group');
 
 			$name = $names->generate_name($tier, 'all', 1)[0];
 			$name_arr = explode(' ', $name);
