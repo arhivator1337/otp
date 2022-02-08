@@ -1,0 +1,7 @@
+<? if ($breadcrumb['buttons']) { ?>
+	<? foreach ($breadcrumb['buttons'] as $id => $data) { ?>
+		<div class="d-flex flex-column justify-content-center <?=count($breadcrumb['buttons'])>1?'mr-4':''?>">
+			<a class="btn <?=$data['settings']['class']?:'btn-primary'?>" href="<?=\helpers\html::url($data['link'])?>"><?=$data['name']?></a>
+		</div>
+	<? } ?>
+<? } ?>

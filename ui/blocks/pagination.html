@@ -1,0 +1,24 @@
+<? use helpers\html;
+
+if($data == 'false') { ?>
+<ul class="pagination">
+	<? if($page >= 1) { ?>
+		<li class="page-item"><a class="page-link pagination" href="<?=html::url($action_url . ($page == 1 ? '' : '' . $page - 1)) ?>"><?=__('forms.previous')?></a></li>
+	<? } ?>
+
+	<? for ($i = $page-1; $i < $page+2; $i++) { ?>
+		<li class="page-item  <?=$i == $page ? 'active': '' ?>"><a class="page-link pagination" href="<?=$action_url . $i ?>"><?=$i?></a></li>
+	<? } ?>
+	<li class="page-item"><a class="page-link pagination" href="<?=html::url($action_url . ($page + 1 )) ?>"><?=__('forms.next')?></a></li>
+</ul>
+<?  } else  {  ?>
+	<ul class="pagination">
+			<?$prev_page = $page == false ? '' : '' . $page - 1; ?>
+			<li class="page-item"><button class="page-link pagination page_previous" <?=$page >= 1 ? '' : 'disabled' ?> <?//=$prev_page == '' ? 'disable' : '' ?> data-url="<?=html::url($action_url)?>" data-page="<?=html::url($prev_page)?>" href="<?=html::url($action_url . $prev_page)?>"><?=__('forms.previous')?></button></li>
+
+		<li class="col-sm-1"><input size="3" value="<?=$page?>" id="page" name="page" class="form-control page_page" style="padding: 0 5px 0 5px; min-width: 30px"></li>
+		<li class="page-item"><button class="page-link pagination page_next" data-url="<?=html::url($action_url)?>" data-page="<?=html::url($page + 1 )?>" href="<?=html::url($action_url . ($page + 1 )) ?>"><?=__('forms.next')?></button></li>
+		<li class="col-sm-1 page-item"><button type="button" class="btn btn-outline-success" name="refresh" data-url="<?=html::url($action_url)?>" onclick="changePageTo(this)">↺&nbsp;<?=__('forms.reload')?></button></li>
+	</ul>
+<? } ?>
+
