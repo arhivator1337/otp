@@ -41,7 +41,6 @@ class name_generator {
 //			echo $names[$i] . '<br>';
 //	}
 
-
 	public function generate_name($tier, $gender = 'all', $limit = 1) {
 		$_gender = $gender;
 		$_tier = $tier;
@@ -68,17 +67,28 @@ class name_generator {
 					$this->names[$tier][$gender][mt_rand(0, $data[$tier][$gender . '_count'])] . ' ' .
 					($data[$tier]['lastname_prefix'] ? $this->names[$tier]['lastname_prefix'][mt_rand(0, $data[$tier]['lastname_prefix'] )] : '');
 
+				$_name = $this->rand(1, $_name, l10n::unaccent($_name));
+
 					if(!empty($this->names[$tier]['lastname']))
-						$_name.= $this->names[$tier]['lastname'][mt_rand(0, $data[$tier]['lastname_count'] )];
+						$_lastname = $this->names[$tier]['lastname'][mt_rand(0, $data[$tier]['lastname_count'] )];
 					else
-						$_name.= $this->names[$tier]['lastname_' . $gender][mt_rand(0, $data[$tier]["lastname_{$gender}_count"] )];
+						$_lastname = $this->names[$tier]['lastname_' . $gender][mt_rand(0, $data[$tier]["lastname_{$gender}_count"] )];
 					//. ' ' . $gender . ' : '.$tier;
 
-				$name[] = $this->randomize_case($_name);
+				$_lastname = $this->rand(1, $_lastname, l10n::unaccent($_lastname));
+
+				$name[] = $this->randomize_case($_name . $_lastname);
 			}
 
 			return $name;
 		}
+	}
+
+	public function rand($max = 1, $str, $executed) {
+		if(mt_rand(0, $max) == $max)
+			return $executed;
+
+		return $str;
 	}
 
 	public function generate_user_agents($limit = 1) {
@@ -126,7 +136,7 @@ class name_generator {
 				$glue2 = $this->glue_generator(true);
 
 			if($limit == 1 && $name_in_nick && mt_rand(0, 1) == 1)
-				$first = l10n::translit($name_in_nick);
+				$first = l10n::unaccent(l10n::translit($name_in_nick));
 			else
 				$first = $part1[mt_rand(0, count($part1)-1)];
 

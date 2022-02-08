@@ -88,4 +88,9 @@ class l10n {
 		$value = strtr($value, $converter);
 		return $value;
 	}
+
+	public static function unaccent($input) {
+		setlocale(LC_ALL, "en_US.utf8");
+		return iconv("utf-8", "ascii//TRANSLIT", $input);
+	}
 }
