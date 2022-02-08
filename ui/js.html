@@ -1,0 +1,66 @@
+<!-- js2 -->
+
+<script>
+
+</script>
+<div class="modal fade" id="confirm-delete" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h5 class="modal-title" id="exampleModalLabel"><?=__('message.confirm');?></h5>
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+					<span aria-hidden="true">&times;</span>
+				</button>
+			</div>
+
+			<div class="modal-body">
+				<?=__('message.confirm_delete1');?>
+				<?=__('message.confirm_delete2');?>
+				<?=__('message.confirm_delete3');?>
+				<p class="debug-url"></p>
+			</div>
+
+			<div class="modal-footer">
+				<button type="button" class="btn btn-default" data-dismiss="modal"><?=__('forms.cancel');?></button>
+				<a class="btn btn-danger btn-ok" id="confirm"><?=__('forms.delete');?></a>
+			</div>
+		</div>
+	</div>
+</div>
+
+<div class="modal fade" id="confirm-universal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h5 class="modal-title" id="exampleModalLabel"><?=__('message.confirm');?></h5>
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+					<span aria-hidden="true">&times;</span>
+				</button>
+			</div>
+
+			<div class="modal-body">
+				<p><?=__('message.confirm_delete1');?></p>
+				<p class="debug-url"></p>
+			</div>
+
+			<div class="modal-footer">
+				<button type="button" class="btn btn-default" data-dismiss="modal"><?=__('forms.cancel');?></button>
+				<a class="btn btn-success btn-ok" id="confirm_modal" data-href="1" data-callback="test"><?=__('forms.proceed');?></a>
+			</div>
+		</div>
+	</div>
+</div>
+
+<div class="modal fade" id="form-universal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+	<div class="modal-dialog" >
+		<div class="modal-content" style="width: 600px" id="form-universal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+					<span aria-hidden="true">&times;</span>
+				</button>
+			</div>
+
+			<div class="modal-body"></div>
+		</div>
+	</div>
+</div>
