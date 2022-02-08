@@ -49,6 +49,7 @@ set('keep_releases', 5);
 set('writable_mode', 'chmod');
 set('writable_chmod_mode', '777');
 set('writable_dirs', ['tmp', 'tmp/cache/', 'sounds', '/tmp/otp/', 'app/migration/', 'app/otp/supervisor_conf/']);
+set('writable_files', ['tmp/cookies.txt']);
 set('allow_anonymous_stats', false);
 
 
