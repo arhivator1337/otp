@@ -27,7 +27,7 @@ class api {
 
 	var $cache_key = 'gen_numbers_';
 	var $generate_range_id = 1;
-	var $generate_from_list = true;
+	var $generate_from_list = false;
 	var $numbers_to_generate_from = [
 		213540018105	,
 		213540037298	,
