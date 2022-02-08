@@ -11,7 +11,7 @@ option('migration', null, InputOption::VALUE_OPTIONAL, 'Migrate or not', false);
 //https://www.hashbangcode.com/article/adding-arguments-and-options-deployer-tasks
 
 require_once 'recipe/deploy/check_remote.php';
-$dep = require_once 'vars.php';
+$dep = include 'vars.php';
 
 define('RED', 31);
 define('BG_RED', 41);
@@ -19,19 +19,6 @@ define('GREEN', 32);
 define('BG_GREEN', 42);
 define('YELLOW', 33);
 define('BG_YELLOW', 43);
-
-//class dep {
-//	static $vars = [
-//		'app' => 'otp',
-//		'base_dir' => '/var/www/otp/',
-//		'local_config_dir' => 'current/deploy/',
-////		'config_dir' => '/var/www/otp/production/current/deploy',
-//		'branches' => ['master', 'dev'],
-//		'dir' => ['dev', 'production', 'stage'],
-//		'mess_prod_only' => 'Task blocked. Production only',
-//	];
-//}
-
 
 class dep {
 	static $vars = [];
@@ -49,6 +36,7 @@ set('writable_mode', 'chmod');
 set('writable_chmod_mode', '777');
 set('writable_dirs', ['tmp', 'tmp/cache/', 'sounds', '/tmp/otp/', 'app/migration/', 'app/otp/supervisor_conf/']);
 set('allow_anonymous_stats', false);
+set('deploy_path', $dep['base_dir'] . '/production');
 
 task('deploy', [
 	'deploy:info',
