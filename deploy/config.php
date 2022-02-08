@@ -91,7 +91,7 @@ task('deploy:info', function () {
 	set('deploy_path', function () {
 		if (input()->hasArgument('dir')) {
 			if (!empty(input()->getArgument('dir')))
-				return get('deploy_dir') . askChoice('Choose dir:', dep::$vars['dir'], null);
+				return '/' . get('deploy_dir') . askChoice('Choose dir:', dep::$vars['dir'], null);
 		}
 		return get('deploy_dir') . '/production';
 	});
@@ -146,7 +146,6 @@ task('deploy:migrations', function () {
 		out("No migration", BG_YELLOW);
 		return true;
 	}
-//	'current_path', dep::$vars['base_dir'] . "/renero_stage");
 	$result = run('cd {{deploy_path}}/current && php index.php scripts/migration/run');
 	out("Migration start:", BG_YELLOW);
 	out($result, YELLOW);
