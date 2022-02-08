@@ -91,7 +91,7 @@ task('deploy:info', function () {
 	set('deploy_path', function () {
 		if (input()->hasArgument('dir')) {
 			if (!empty(input()->getArgument('dir')))
-				return '/' . get('deploy_dir') . askChoice('Choose dir:', dep::$vars['dir'], null);
+				return get('deploy_dir') . '/' . askChoice('Choose dir:', dep::$vars['dir'], null);
 		}
 		return get('deploy_dir') . '/production';
 	});
