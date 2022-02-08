@@ -50,9 +50,7 @@ class stats extends \controllers\Controller {
 			$arr['date'] = date($app->get('date_template'), $data[$i]['date']);
 			$partner = \helpers\utils::universal_phone_code_searcher($data[$i]['number'], $ranges);
 			$arr['partner'] = $app->exists('partners.' . $partner) ? $app->get('partners.' . $partner) : 'partner id not found: ' . $partner;
-
-			//$arr['country'] = $app->exists('countries.' . $data[$i]['country_id']) ? $app->get('countries.' . $data[$i]['country_id']) : false;
-
+			$arr['country'] = $app->exists('countries.' . $data[$i]['country_id']) ? $app->get('countries.' . $data[$i]['country_id']) : false;
 			$arr['origin_date'] = date($app->get('date_template'), $data[$i]['origin_date']);
 			if(!empty($data[$i]['req_date']))
 				$arr['req_date'] = date($app->get('date_template'), $data[$i]['req_date']);
