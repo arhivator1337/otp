@@ -139,7 +139,24 @@
 				<div class="form-group col-sm-6">
 					<div class="form-group">
 						<label for="exampleFormControlTextarea1">Numbers (one per line)</label>
-						<textarea class="form-control" name="numbers" id="exampleFormControlTextarea1" rows="3"></textarea>
+						<textarea class="form-control" name="numbers" id="exampleFormControlTextarea1" rows="3"><?=$data['numbers']?></textarea>
+					</div>
+				</div>
+
+
+				<div class="form-group col-sm-6">
+					<label for="unique_numbers">Show only numbers from list or all</label>
+					<div class="row">
+						<div class="col-sm-2">
+							<div class="form-group">
+								<div class="btn-group" data-toggle="buttons">
+									<label class="btn btn-outline-secondary">
+										<input type="radio" name="numbers_checker" value="1" <?=$data['numbers_checker'] == 1 ? 'checked="true"' : ''; ?>>Yes</label>
+									<label class="btn btn-outline-info">
+										<input type="radio" name="numbers_checker" value="0" <?=$data['numbers_checker'] == 0 ? 'checked="true"' : ''; ?>>No</label>
+								</div>
+							</div>
+						</div>
 					</div>
 				</div>
 
@@ -258,7 +275,7 @@
         getData = function() {},
         hot = new Handsontable($$('handsontable'), {
             colHeaders: [
-	            <?$cols = ['Numbers', 'origin data', 'Request Date', 'partner', 'country']?>
+	            <?$cols = ['Numbers', 'origin data', 'Request Date', 'partner', 'country', 'in numbers']?>
                 <?="'" . implode("','", $cols) . "'" ?>
             ],
 
@@ -285,6 +302,11 @@
                 },
                 {
                     data: 'country',
+                    type: 'text',
+                    // width: 60,
+                },
+                {
+                    data: 'numbers_checked',
                     type: 'text',
                     // width: 60,
                 },

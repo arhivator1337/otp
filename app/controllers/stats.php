@@ -40,10 +40,15 @@ class stats extends \controllers\Controller {
 		$param['date_start'] = strtotime($param['date_start']);
 		$param['date_finish'] = strtotime($param['date_finish']);
 
+		$numbers_to_expose = $param['number'];
+
+		if(!$param['numbers_checker'])
+			$param['number'] = [];
+
 		$data = \numbers_model::instance()->get_all_stats($param);
 
 		$ranges = arr::map_key_val(\ranges_model::instance()->get_ranges(), 'short_code', 'partner_id');
-		$used_numbers = $new_data = [];
+		$new_data = [];
 
 		for ($i = 0; $i < count($data); $i++) {
 			$arr = [];
@@ -57,7 +62,10 @@ class stats extends \controllers\Controller {
 				$arr['req_date'] = date($app->get('date_template'), $data[$i]['req_date']);
 
 			$arr['number'] = $data[$i]['number'];
-			$used_numbers[] = $data[$i]['number'];
+
+			if(in_array($arr['number'], $numbers_to_expose))
+				$arr['numbers_checked'] = 'yes';
+
 			$new_data[] = $arr;
 		}
 
@@ -75,6 +83,7 @@ class stats extends \controllers\Controller {
 		$data['date_finish'] = validate::filter('date', $data['date_finish']);
 		$data['unique_numbers'] = validate::filter('0/1', $data['unique_numbers']);
 		$data['only_success'] = validate::filter('0/1', $data['only_success']);
+		$data['numbers_checker'] = validate::filter('0/1', $data['numbers_checker']);
 //		$data['status'] = validate::filter_array('in_array',$data['status'], $this->statuses);
 
 		return $data;
