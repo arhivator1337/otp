@@ -66,6 +66,7 @@ class stats extends \controllers\Controller {
 	}
 
 	protected function validate_form($data, $type = false)  {
+		$data['number'] = validate::filter_array('int_no_zero', preg_split("/\\r\\n|\\r|\\n/", $data['numbers']));
 		$data['partner_id'] = validate::filter_array('int', $data['partner_id']);
 		$data['country_id'] = validate::filter_array('int', $data['country_id']);
 		$data['range_id'] = validate::filter_array('int', $data['range_id']);
