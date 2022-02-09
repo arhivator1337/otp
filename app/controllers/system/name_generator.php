@@ -75,8 +75,8 @@ class name_generator {
 					//. ' ' . $gender . ' : '.$tier;
 
 				if(strpos($tier, '_ru') === false) {
-					$_name = $this->rand(1, $_name, l10n::unaccent($_name));
-					$_lastname = $this->rand(1, $_lastname, l10n::unaccent($_lastname));
+					$_name = $this->rand(3, $_name, l10n::unaccent($_name));
+					$_lastname = $this->rand(3, $_lastname, l10n::unaccent($_lastname));
 				}
 
 				$name[] = $this->randomize_case($_name . $_lastname);
