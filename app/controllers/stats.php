@@ -21,6 +21,7 @@ class stats extends \controllers\Controller {
 
 		$app->mset([
 			'content' => 'stats.html',
+			'countries' => $app->get('countries'),
 			'ranges' => \ranges_model::instance()->get_ranges(),
 			'page' => $page,
 			'pagination_url' => '/stats/get/',
@@ -66,7 +67,7 @@ class stats extends \controllers\Controller {
 
 	protected function validate_form($data, $type = false)  {
 		$data['partner_id'] = validate::filter_array('int', $data['partner_id']);
-		$data['country_id'] = validate::filter_array('int', $data['partner_id']);
+		$data['country_id'] = validate::filter_array('int', $data['country_id']);
 		$data['range_id'] = validate::filter_array('int', $data['range_id']);
 		$data['limit'] = validate::filter('int', $data['limit']);
 		$data['date_start'] = validate::filter('date', $data['date_start']);

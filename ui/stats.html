@@ -53,18 +53,17 @@
 					</select>
 				</div> -->
 
-				<!-- ><div class="form-group col-md-6">
-					<label for="Status"><?=__('main.status')?></label>
-					<?$data['status'] = !empty($data['status']) ? array_flip($data['status']) : [];  ?>
-					<select name="status[]" id="Status" class="form-control selectpicker" multiple>
-						<? /*foreach ($statuses as $id => $val) { ?>
-							<option value="<?=$val?>" <?=isset($data['status'][$val]) ? 'selected' : '' ?>>
+				<div class="form-group col-md-6">
+					<label for="country_id">Country</label>
+					<?$data['country_id'] = !empty($data['country_id']) ? array_flip($data['country']) : [];  ?>
+					<select name="country_id[]" id="country_id" class="form-control selectpicker" multiple>
+						<? foreach ($countries as $id => $val) { ?>
+							<option value="<?=$id?>" <?=isset($data['country_id'][$id]) ? 'selected' : '' ?>>
 								<?=$val?>
 							</option>
-						<? } */?>
+						<? } ?>
 					</select>
 				</div>
-			-->
 
 			</div>
 
