@@ -91,6 +91,24 @@
 					</div>
 				</div>
 			</div>
+			<div class="row">
+				<div class="form-group col-sm-6">
+					<label for="only_success">Only success</label>
+					<div class="row">
+						<div class="col-sm-2">
+							<div class="form-group">
+								<div class="btn-group" data-toggle="buttons">
+									<label class="btn btn-outline-secondary">
+										<input type="radio" name="only_success" value="1" <?=$data['only_success'] == 1 ? 'checked="true"' : ''; ?>>Yes</label>
+									<label class="btn btn-outline-info">
+										<input type="radio" name="only_success" value="0" <?=$data['only_success'] == 0 ? 'checked="true"' : ''; ?>>No</label>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+
 
 			<div class="row">
 				<div class="form-group col-sm-6">

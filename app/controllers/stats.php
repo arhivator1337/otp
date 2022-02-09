@@ -74,6 +74,7 @@ class stats extends \controllers\Controller {
 		$data['date_start'] = validate::filter('date', $data['date_start']);
 		$data['date_finish'] = validate::filter('date', $data['date_finish']);
 		$data['unique_numbers'] = validate::filter('0/1', $data['unique_numbers']);
+		$data['only_success'] = validate::filter('0/1', $data['only_success']);
 //		$data['status'] = validate::filter_array('in_array',$data['status'], $this->statuses);
 
 		return $data;
