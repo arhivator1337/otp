@@ -19,7 +19,7 @@ class numbers_model extends \models\Model {
 			$_params['group_by'] = 'n.number';
 
 		return $this->query_gen("SELECT *, req.date as req_date, n.date as origin_date from {$this->tbl_numbers} as n join {$this->tbl_number_requests} as req on req.number_id = n.id left join otp_ranges as ran on ran.id = n.range_id %where% %group_by% order by n.id desc, req.id desc limit :limit",
-			['limit' => $params['limit'], 'ran.partner_id IN (:partner_id)' => $params['partner_id'], 'date >= :date_start' => $params['date_start'], 'date <= :date_finish' => $params['date_finish']]  + $_params,
+			['limit' => $params['limit'], 'ran.partner_id IN (:partner_id)' => $params['partner_id'], 'n.date >= :date_start' => $params['date_start'], 'n.date <= :date_finish' => $params['date_finish']]  + $_params,
 			0
 		);
 	}
