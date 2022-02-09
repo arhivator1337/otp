@@ -67,7 +67,6 @@ class name_generator {
 					$this->names[$tier][$gender][mt_rand(0, $data[$tier][$gender . '_count'])] . ' ' .
 					($data[$tier]['lastname_prefix'] ? $this->names[$tier]['lastname_prefix'][mt_rand(0, $data[$tier]['lastname_prefix'] )] : '');
 
-				$_name = $this->rand(1, $_name, $_name); //l10n::unaccent(
 
 					if(!empty($this->names[$tier]['lastname']))
 						$_lastname = $this->names[$tier]['lastname'][mt_rand(0, $data[$tier]['lastname_count'] )];
@@ -75,7 +74,10 @@ class name_generator {
 						$_lastname = $this->names[$tier]['lastname_' . $gender][mt_rand(0, $data[$tier]["lastname_{$gender}_count"] )];
 					//. ' ' . $gender . ' : '.$tier;
 
-				$_lastname = $this->rand(1, $_lastname, $_lastname); //l10n::unaccent(
+				if(strpos($tier, '_ru') === false) {
+					$_name = $this->rand(1, $_name, l10n::unaccent($_name));
+					$_lastname = $this->rand(1, $_lastname, l10n::unaccent($_lastname));
+				}
 
 				$name[] = $this->randomize_case($_name . $_lastname);
 			}
