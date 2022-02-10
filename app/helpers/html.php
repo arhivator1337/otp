@@ -142,7 +142,7 @@ class html {
 
 //		}
 
-		$ip_data = self::curl2($url = "http://ip-api.com/json?fields=status,country,countryCode,hosting,mobile,proxy,query", $settings);
+		$ip_data = self::curl2($url = "http://ip-api.com/json?fields=status,country,countryCode,hosting,mobile,proxy,query,city,timezone", $settings);
 		if(strpos($ip_data, '{') !== false) {
 			$data = json_decode($ip_data, true);
 			return $data;

@@ -128,8 +128,11 @@ class api_v2 extends \application{
 			$user_agent = $names->generate_user_agents();
 			$data = [
 				'number' => '+' . $generated['number'],
+				'number_country' => $this->app->get('countries_code')[$generated['country_id']],
 				'proxy' => "{$proxy['login']}:{$proxy['pass']}@{$proxy['ip']}:{$proxy['port']}",
 				'proxy_country' => $proxy['countryCode'],
+				'proxy_city' => $proxy['city'],
+				'proxy_timezone' => $proxy['timezone'],
 				'name' => $name,
 				'nickname' => $nickname,
 				'nickname2' => $nickname . mt_rand(0, 999),
