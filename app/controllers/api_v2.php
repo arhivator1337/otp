@@ -26,7 +26,7 @@ class api_v2 extends \application{
 		$this->app = \Base::instance();
 		$this->app->config('otp.ini');
 
-		preg_match( "/\/.*(json|plain|hquery)$/", $_SERVER['REQUEST_URI'], $matches);
+		preg_match( "/\/.*(json|serialize|hquery)$/", $_SERVER['REQUEST_URI'], $matches);
 
 		if(!empty($matches[1]) && in_array($matches[1], ['json', 'serialize', 'hquery']))
 			$this->answer_type = $matches[1];
@@ -129,10 +129,12 @@ class api_v2 extends \application{
 			$data = [
 				'number' => '+' . $generated['number'],
 				'proxy' => "{$proxy['login']}:{$proxy['pass']}@{$proxy['ip']}:{$proxy['port']}",
+				'proxy_country' => $proxy['countryCode'],
 				'name' => $name,
 				'nickname' => $nickname,
 				'nickname2' => $nickname . mt_rand(0, 999),
 				'user_agent' => $user_agent,
+				'requests_limit' => 1,
 			];
 
 			$extra = [
