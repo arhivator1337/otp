@@ -109,6 +109,7 @@ class api_v2 extends \application{
 		if(empty($generated))
 			$this->message->add('generation_error', __function__, 'api_v2 number generation');
 
+
 		$proxy = $this->get_proxy($generated['country_id']);
 		if($proxy['error']) {
 			$error = $proxy['error'];
@@ -134,8 +135,8 @@ class api_v2 extends \application{
 				'proxy_city' => $proxy['city'],
 				'proxy_timezone' => $proxy['timezone'],
 				'name' => $name,
-				'nickname' => $nickname,
-				'nickname2' => $nickname . mt_rand(0, 999),
+				'nickname' => $nickname . $this->random_int(2),
+				'nickname2' => $nickname . $this->random_int(3),
 				'user_agent' => $user_agent,
 				'requests_limit' => 1,
 			];
@@ -191,10 +192,10 @@ class api_v2 extends \application{
 		elseif(count($proxies) == 0)
 			return ['error' => 'no_proxy'];
 
-		if($country_id !== false) {
+		if($country_id !== false or $country_id !== null) {
 			$c_proxy = arr::search_key_vals($proxies, 'country_id', $country_id);
 
-			if (count($c_proxy) > 0)
+			if (!empty($c_proxy))
 				return $c_proxy[mt_rand(0, count($c_proxy) - 1)];
 		}
 
@@ -300,6 +301,14 @@ class api_v2 extends \application{
 			$key = substr($key, 0, -1);
 		}
 		return false;
+	}
+
+	function random_int($symbols = 2) {
+		$ret = '';
+		for ($i = 0; $i < $symbols; $i++)
+			$ret.= mt_rand(0, 9);
+
+		return $ret;
 	}
 
 }
