@@ -26,14 +26,18 @@ class api_v2 extends \application{
 		$this->app = \Base::instance();
 		$this->app->config('otp.ini');
 
-		preg_match( "/\/.*(json|serialize|hquery)$/", $_SERVER['REQUEST_URI'], $matches);
+		preg_match( "/\/.*(json|serialize|hquery)(\\?.*)$/", $_SERVER['REQUEST_URI'], $matches);
 
 		if(!empty($matches[1]) && in_array($matches[1], ['json', 'serialize', 'hquery']))
 			$this->answer_type = $matches[1];
 		else
 			$this->answer_type = 'json';
+
 		$request = str_replace('/' . $this->answer_type, '',  $_SERVER['REQUEST_URI']);
+		$request = preg_replace('/(\\?.*)+$/', '', $request); //fix for $_GET requests
 		$req = explode('/', $request);
+
+		$this->extra = $this->app->get('GET');
 
 		$api_key = $req[2];
 		unset($req[0], $req[1], $req[2]);
@@ -165,11 +169,13 @@ class api_v2 extends \application{
 	}
 
 	protected function get_proxy($country_id = false) {
+		$proxy_data = [];
 		$proxy = $this->load_proxy($country_id);
 		if(isset($proxy['error']))
 			return $proxy;
 
-		$proxy_data = html::check_proxy_real_ip($proxy);
+		if(empty($this->extra['no_proxy_check']))
+			$proxy_data = html::check_proxy_real_ip($proxy);
 
 		$countries = array_flip($this->app->get('countries'));
 		if(!empty($proxy_data)) {
