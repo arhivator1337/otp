@@ -24,7 +24,7 @@ class numbers_model extends \models\Model {
 		if($params['only_success'])
 			$left = '';
 
-		return $this->query_gen("SELECT *, req.date as req_date, n.date as origin_date from {$this->tbl_numbers} as n {$left} join {$this->tbl_number_requests} as req on req.number_id = n.id left join otp_ranges as ran on ran.id = n.range_id %where% %group_by% order by n.id desc, req.id desc limit :limit",
+		return $this->query_gen("SELECT *, req.date as req_date, n.date as origin_date from {$this->tbl_numbers} as n {$left} join {$this->tbl_number_requests} as req on req.number_id = n.id left join otp_ranges as ran on ran.id = n.range_id join otp_numbers_data as nd on n.id = nd.number_id JOIN proxy as p on p.id = nd.proxy %where% %group_by% order by n.id desc, req.id desc limit :limit",
 			['limit' => $params['limit'], 'ran.partner_id IN (:partner_id)' => $params['partner_id'], 'ran.country_id IN (:country_id)' => $params['country_id'], 'n.number IN (:number)' => $params['number'], 'n.date >= :date_start' => $params['date_start'], 'n.date <= :date_finish' => $params['date_finish']]  + $_params,
 			0
 		);

@@ -62,6 +62,9 @@ class stats extends \controllers\Controller {
 				$arr['req_date'] = date($app->get('date_template'), $data[$i]['req_date']);
 
 			$arr['number'] = $data[$i]['number'];
+			$arr['proxy'] = $data[$i]['login'] . ':' . $data[$i]['pass'] . '@' . $data[$i]['ip'] . ':' . $data[$i]['port'];
+			$arr['name'] = $data[$i]['name'];
+			$arr['nickname'] = $data[$i]['nickname'];
 
 			if(in_array($arr['number'], $numbers_to_expose))
 				$arr['numbers_checked'] = 'yes';

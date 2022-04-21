@@ -275,7 +275,7 @@
         getData = function() {},
         hot = new Handsontable($$('handsontable'), {
             colHeaders: [
-	            <?$cols = ['Numbers', 'origin data', 'Request Date', 'partner', 'country', 'in numbers']?>
+	            <?$cols = ['Numbers', 'origin data', 'Request Date', 'partner', 'country', 'in numbers', 'proxy', 'name', 'nickname']?>
                 <?="'" . implode("','", $cols) . "'" ?>
             ],
 
@@ -310,7 +310,21 @@
                     type: 'text',
                     // width: 60,
                 },
-
+                {
+                    data: 'proxy',
+                    type: 'text',
+                    // width: 60,
+                },
+	            {
+                    data: 'name',
+                    type: 'text',
+                    // width: 60,
+                },
+                {
+                    data: 'nickname',
+                    type: 'text',
+                    // width: 60,
+                },
 
             ],
             startRows: 1,
