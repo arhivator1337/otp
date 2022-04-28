@@ -56,7 +56,7 @@ class stats extends \controllers\Controller {
 			$arr['date'] = date($app->get('date_template'), $data[$i]['date']);
 			$partner = \helpers\utils::universal_phone_code_searcher($data[$i]['number'], $ranges);
 			$arr['partner'] = $app->exists('partners.' . $partner) ? $app->get('partners.' . $partner) : 'partner id not found: ' . $partner;
-			$arr['country'] = $app->exists('countries.' . $data[$i]['country_id']) ? $app->get('countries.' . $data[$i]['country_id']) : false;
+			$arr['country'] = $this->universal_phone_code_searcher('34611500659', $app->get('phone_codes_country'));
 			$arr['origin_date'] = date($app->get('date_template'), $data[$i]['origin_date']);
 			if(!empty($data[$i]['req_date']))
 				$arr['req_date'] = date($app->get('date_template'), $data[$i]['req_date']);
@@ -74,6 +74,19 @@ class stats extends \controllers\Controller {
 
 		echo html::to_json($new_data, $this->profiler());
 		die;
+	}
+
+
+	protected function universal_phone_code_searcher($key, $array) {
+		while (strlen($key) > 0) {
+			if (array_key_exists($key, $array)) {
+				if($this->app->get('countries.' . $array[$key]))
+					return $this->app->get('countries.' . $array[$key]);
+			}
+
+			$key = substr($key, 0, -1);
+		}
+		return false;
 	}
 
 	protected function validate_form($data, $type = false)  {
