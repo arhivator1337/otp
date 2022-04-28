@@ -31,11 +31,16 @@ class stats extends \controllers\Controller {
 		$this->render();
 	}
 	public function get(\Base $app, $param) {
-		$page = false;
-		if($param['param1'] > 0)
-			$page = $param['param1'];
+
+
+		if(!($page = validate::filter('int', $param['param1'])))
+			$page = false;
 
 		$param = $this->validate_form($app->get('POST'), true);
+		$param['limit'] = $param['limit']?:500;
+
+		if($page)
+			$param['offset'] = $param['limit']*$page;
 
 		$param['date_start'] = strtotime($param['date_start']);
 		$param['date_finish'] = strtotime($param['date_finish']);
@@ -91,6 +96,7 @@ class stats extends \controllers\Controller {
 
 	protected function validate_form($data, $type = false)  {
 		$data['number'] = validate::filter_array('int_no_zero', preg_split("/\\r\\n|\\r|\\n/", $data['numbers']));
+		$data['number_starts'] = validate::filter('int', $data['number_starts']);
 		$data['partner_id'] = validate::filter_array('int', $data['partner_id']);
 		$data['country_id'] = validate::filter_array('int', $data['country_id']);
 		$data['range_id'] = validate::filter_array('int', $data['range_id']);

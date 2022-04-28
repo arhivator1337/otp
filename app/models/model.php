@@ -48,14 +48,20 @@ class Model extends \Prefab{
 			$sql = str_replace('%where%', $str_params, $sql);
 		}
 
+		if(!empty($params['offset'])) {
+			$sql = str_replace('%offset%', 'OFFSET ' . $params['offset'], $sql);
+		}
+
 		if(!empty($params['group_by']))
 			$group_params = 'GROUP BY ' . $params['group_by'];
 			$sql = str_replace('%group_by%', $group_params, $sql);
 
-		$sql = str_replace('%where%', '', $sql);
-		$sql = str_replace('%group_by%', '', $sql);
+		$sql = str_replace(['%where%', '%group_by%', '%offset%'], '', $sql);
 
 		if($debug == 1) {
+			echo '<pre>';
+			print_r($params);
+			echo '</pre>';
 			echo '<pre>';
 			print_r(['str_params' => $str_params, 'group_by' => $group_params, 'pdo_params' => $pdo_params, 'sql' => $sql . ';']);
 			die('<pre>');
