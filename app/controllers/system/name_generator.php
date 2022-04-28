@@ -145,7 +145,8 @@ class name_generator {
 			$nick = $first. $glue . $part2[mt_rand(0, count($part2)-1)] . $glue2;
 			$nick = $this->randomize_case($nick);
 
-			$ret[] = str_replace(['(', ')', ' '], '', $nick);
+			$nick = preg_replace("/[\'()_ \!\@\#\$\%\^&\*]+/", '', $nick);
+			$ret[] = preg_replace('/[^\x00-\x7F]+/', '', $nick);
 		}
 		return $ret;
 	}
