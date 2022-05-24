@@ -3079,18 +3079,23 @@ class api {
 		}
 		else {
 			$ranges = $this->get_ranges();
-			$generated = $this->generate_number($ranges);
+			if (!empty($ranges))
+				$generated = $this->generate_number($ranges);
 		}
 
-		$model = new \DB\SQL\Mapper($this->db, $this->db_numbers);
-		$model->number = $generated['number'];
-		$model->date = time();
-		$model->status = 0;
-		$model->range_id = $generated['range_id'];
-		$model->save();
+		if (!empty($generated)) {
+			$model = new \DB\SQL\Mapper($this->db, $this->db_numbers);
+			$model->number = $generated['number'];
+			$model->date = time();
+			$model->status = 0;
+			$model->range_id = $generated['range_id'];
+			$model->save();
+			$this->log('get_number: ' . '+' . $generated['number']);
+			$this->answer(true, ['number' => '+' . $generated['number']]);
+		}
+		else
+			$this->answer(false, []);
 
-		$this->log('get_number: ' . '+' . $generated['number']);
-		$this->answer(true, ['number' => '+' . $generated['number']]);
 	}
 
 	private function set_used_numbers($number) {
