@@ -31,8 +31,6 @@ class stats extends \controllers\Controller {
 		$this->render();
 	}
 	public function get(\Base $app, $param) {
-
-
 		if(!($page = validate::filter('int', $param['param1'])))
 			$page = false;
 
@@ -81,6 +79,52 @@ class stats extends \controllers\Controller {
 		die;
 	}
 
+	function v1_tries(\Base $app, $params) {
+		\helpers\auth::require_login();
+
+		if (!($limit = validate::filter('int', $params['param1'])))
+			$limit = 200;
+
+		$pdo_params = [':limit' => $limit];
+
+		$sql_params = [];
+		if (($partner_id = validate::filter('int_no_zero', $app->get('GET.partner_id'))) ) {
+			$pdo_params[':partner_id'] = $partner_id;
+			$sql_params[] = 'ran.partner_id  = :partner_id';
+		}
+
+		$str_params = '';
+		if(!empty($sql_params))
+			$str_params = ' where ' .implode(' and ', $sql_params);
+
+		$numbers = $app->db->exec("SELECT *, req.date as req_date, n.date as origin_date from otp_numbers as n left join otp_number_requests as req on req.number_id = n.id left join otp_ranges as ran on ran.id = n.range_id {$str_params} order by n.id desc, req.id desc limit :limit;", $pdo_params);
+		$ranges = arr::map_key_val(\ranges_model::instance()->get_ranges(), 'short_code', 'partner_id');
+
+		for ($i = 0; $i < count($numbers); $i++) {
+//			$country = $this->universal_phone_code_searcher($numbers[$i]['number'], $ranges);
+			$numbers[$i]['partner'] = $app->exists('partners.' . $numbers[$i]['partner_id']) ? $app->get('partners.' . $numbers[$i]['partner_id']) : 'partner id not found: ' . $numbers[$i]['partner_id'];
+			$numbers[$i]['country'] = $app->exists('countries.' . $numbers[$i]['country_id']) ? $app->get('countries.' . $numbers[$i]['country_id']) : '';
+		}
+
+		$partners = $app->get('partners');
+		$partners[0] = 'All';
+
+		$app->mset([
+			'content' => 'stats_v1_tries.html',
+			'app' => $app,
+			'data' => $numbers,
+			'ranges' => $ranges,
+			'partners_data' => $partners,
+			'countries' => $app->get('countries'),
+		]);
+
+		$data = explode("\n", $this->app->get('db')->log());
+		$count_data = count($data)-1;
+		$data[] = 'total sql:' . $count_data;
+		$this->app->set('profiler', $data);
+
+		$this->render();
+	}
 
 	protected function universal_phone_code_searcher($key, $array) {
 		while (strlen($key) > 0) {
