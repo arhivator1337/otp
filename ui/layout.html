@@ -355,14 +355,8 @@ use helpers\l10n;
 					<div class="mb-0 mx-2 my-2 h-25 d-inline-block" style="vertical-align: top;">
 						Generated: <?=round(microtime(true) - Base::instance()->get('start_time'), 4); ?> |
 						Timezone: <?=$app->get('settings.timezone')?>; Server time: <?=date('Y-m-d H:i:s');?> |
-						Dialer: <span style="border-radius: 4px;margin: 0 2px 0 0px; padding: 0 4px 0 4px"
-							<? if($app->get('settings.service_status') == 1) { ?>
-						        class="alert-success">ON
-							<? } else { ?>
-								class="alert-danger">OFF
-							<? } ?>
 						</span>
-						Copyright © 2020-<?=date('Y')?>
+						Copyright © 2021-<?=date('Y')?>
 				</div>
 			</div>
 
