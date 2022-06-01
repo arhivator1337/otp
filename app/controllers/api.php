@@ -71,19 +71,21 @@ class api  extends \application{
 		$ranges_model = new \ranges_model();
 		$numbers_model = new \numbers_model();
 
-		if($settings['numbers_from_list']) {
-			$list_numbers = arr::map_id_nested($ranges_model->get_number_list(1, null, null, 1, 0), 'group_id');
+		$list_numbers = arr::map_id_nested($ranges_model->get_number_list(1, null, null, 1, 0), 'group_id');
+
+		if($settings['numbers_from_list'] && !empty($list_numbers)) {
 			$current_list_numbers = $list_numbers[array_rand($list_numbers)];
 			$number_data = $current_list_numbers[array_rand($current_list_numbers)];
-			$number_id = $numbers_model->save_number($number_data['number'], $number_data['range_id'], $number_data['type']);
+			$number_id = $numbers_model->save_number($number_data['number'], $number_data['range_id'], 2);
 			$generated = ['number' => $number_data['number'], 'range_id' => $number_data['range_id']];
+			$ranges_model->update_number_from_list($number_data['number_id'], 0);
 		}
 		else {
 			$ranges = $this->get_ranges();
 			if (!empty($ranges))
 				$generated = $this->generate_number($ranges);
 			if (!empty($generated)) {
-				$number_id = $numbers_model->save_number($generated['number'], $generated['range_id'], $generated['type']);
+				$number_id = $numbers_model->save_number($generated['number'], $generated['range_id'], 1); //type 1 generate from range
 			}
 		}
 
