@@ -20,7 +20,7 @@ class api  extends \application{
 	var $db_ranges = 'otp_ranges';
 	var $time_limit = 60*60; //60 min
 	var $code_active = false;
-	var $log_file = '/tmp/ravan/api.log';
+	var $log_file = '/tmp/ravan/api_v1.log';
 	var $cache_key = 'gen_numbers_';
 	protected $client_id = 1;
 
@@ -50,8 +50,6 @@ class api  extends \application{
 		if(!in_array($matches2[1], get_class_methods($this)))
 			$this->error('requested method not found');
 
-//		$this->log = new \Log('/tmp/ravan/api.log');
-//		$this->log = log::instance('/tmp/ravan/api.log');
 	}
 
 	protected function generate_number($ranges) {
@@ -80,6 +78,8 @@ class api  extends \application{
 				$generated['type'] = 1;
 			}
 		}
+
+		$this->log(print_r($generated, 1));
 
 		if (!empty($generated)) {
 			$number_id = $numbers_model->save_number($generated['number'], $generated['range_id'], $generated['type']);
