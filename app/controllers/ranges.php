@@ -18,13 +18,6 @@ class ranges extends \controllers\Controller {
 
 	public function index(\Base $app, $param) {
 		$page = false;
-//		if($param['param1'] > 0)
-//			$page = $param['param1'];
-
-//		$data = (new \ranges_model())->get_ranges(null, 1);
-//		for ($i = 0; $i < count($data); $i++) {
-//			$data['country_id']
-//		}
 
 		$this->add_main_button('Add Range', '/ranges/ranges_create');
 		$this->add_breadcrumb();
