@@ -59,6 +59,7 @@
 						<th>Id</th>
 						<th>Partner</th>
 						<th>Name</th>
+						<th>Not used / Used</th>
 						<th>Status</th>
 						<th>Manage</th>
 					</tr>
@@ -68,6 +69,7 @@
 							<td><?=$i ?></td>
 							<td><?=$app->get('partners.' . $s['partner_id']) ?></td>
 							<td><?=$s['name'] ?></td>
+							<td><strong><?=$data_list_stats[$s['id']][1]['total']?:0 ?> </strong> / <?=$data_list_stats[$s['id']][0]['total']?:0 ?> </td>
 							<td><?=$s['status'] == 1 ? 'active' : 'deactive' ?></td>
 							<td>
 								<div class="btn-group btn-sm" aria-label="" role="group">

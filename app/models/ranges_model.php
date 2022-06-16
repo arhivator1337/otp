@@ -31,6 +31,10 @@ class ranges_model extends \models\Model {
 		return $this->query_gen("select * from {$this->tbl_otp_number_list_groups} %where%", ['status = :status' => $status, 'country_id IN (:country_id)' => $country_id, 'partner_id = :partner_id' => $partner_id]);
 	}
 
+	function get_stats_lists() {
+		return $this->db->exec("SELECT group_id, COUNT(*) as total, status from {$this->tbl_otp_number_lists} GROUP by group_id, status");
+	}
+
 	function get_number_list($group_status = null, $country_id = null, $partner_id = null, $number_status = null, $except_country_id = null) {
 		return $this->query_gen("select *, lists.id as number_id, gr.id as range_id from {$this->tbl_otp_number_lists} as lists join {$this->tbl_otp_number_list_groups} as gr on gr.id = lists.group_id  %where%", ['gr.status = :group_status' => $group_status, 'lists.status = :number_status' => $number_status, 'country_id IN (:country_id)' => $country_id, 'country_id NOT IN (:country_id)' => $except_country_id, 'partner_id = :partner_id' => $partner_id]);
 	}

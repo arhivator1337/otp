@@ -21,13 +21,15 @@ class ranges extends \controllers\Controller {
 
 		$this->add_main_button('Add Range', '/ranges/ranges_create');
 		$this->add_breadcrumb();
+		$ranges_model = new \ranges_model();
 
 		$app->mset([
 			'content' => 'ranges.html',
 			'page' => $page,
 			'countries' => $this->app->get('countries'),
-			'data' => (new \ranges_model())->get_ranges_new() ,
-			'data_list_groups' => (new \ranges_model())->get_number_list_groups() ,
+			'data' => $ranges_model->get_ranges_new() ,
+			'data_list_groups' =>$ranges_model->get_number_list_groups(),
+			'data_list_stats' => arr::map_id_nested($ranges_model->get_stats_lists(), 'group_id', 'status'),
 		]);
 
 		$this->render();

@@ -47,7 +47,7 @@ class arr {
 		$res = [];
 		for ($i = 0; $i < count($array); $i++) {
 			if($nested_id_to_map) {
-				if (!empty($array[$i][$id_to_map]) && $array[$i][$nested_id_to_map])
+				if (!empty($array[$i][$id_to_map]) && $array[$i][$nested_id_to_map] !== false)
 					$res[$array[$i][$id_to_map]][$array[$i][$nested_id_to_map]] = $array[$i];
 			} else {
 				if (!empty($array[$i][$id_to_map]))
