@@ -87,6 +87,11 @@ $app->route('GET|POST /api_v2/@param1/@action/@param2', '\controllers\api_v2->@a
 $app->route('GET|POST /api_v2/@param1/@action/@param2/@param3', '\controllers\api_v2->@action');
 $app->route('GET|POST /api_v2/@param1/@action/@param2/@param3/@param4', '\controllers\api_v2->@action');
 
+$app->route('GET|POST /api_v3/@param1/@action', '\controllers\api_v3->@action');
+$app->route('GET|POST /api_v3/@param1/@action/@param2', '\controllers\api_v3->@action');
+$app->route('GET|POST /api_v3/@param1/@action/@param2/@param3', '\controllers\api_v3->@action');
+$app->route('GET|POST /api_v3/@param1/@action/@param2/@param3/@param4', '\controllers\api_v3->@action');
+
 $app->route('GET|POST /@controller', '\controllers\@controller->index');
 $app->route('GET|POST /@controller/@action', '\controllers\@controller->@action');
 
@@ -100,10 +105,6 @@ for ($i = 1; $i <= 5; $i++) {
 	$route = 'GET|POST /@controller/@action' . $str;
 	$app->route($route , '\controllers\@controller->@action');
 }
-
-$app->route('GET|POST|PUT /tasks/edit/@param1', '\controllers\tasks->edit');
-$app->route('GET|POST /tasks/delete/@param1 [ajax]', '\controllers\tasks->delete');
-//$app->route('GET /tasks/ivr_responses/@param1 [ajax]', '\controllers\tasks->ivr_response');
 
 $app->route('GET /scripts/@controller/@action', '\scripts\@controller->@action');
 $app->route('GET /scripts/@controller/@action/@param1', '\scripts\@controller->@action');
