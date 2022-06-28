@@ -73,12 +73,12 @@
 							<td><?=$s['status'] == 1 ? 'active' : 'deactive' ?></td>
 							<td>
 								<div class="btn-group btn-sm" aria-label="" role="group">
-<!--									<a class="btn btn-sm btn-info" href="--><?//=\helpers\html::url('/ranges/range_edit/' . $s['id']) ?><!--">-->
-<!--										<i class="fe fe-edit mr-1" aria-hidden="true"></i>-->
-<!--										--><?//=__('forms.edit')?>
-<!--									</a>-->
+									<a class="btn btn-sm btn-info" href="<?=\helpers\html::url('/ranges/list_edit/' . $s['id']) ?>">
+										<i class="fe fe-edit mr-1" aria-hidden="true"></i>
+										<?=__('forms.edit')?>
+									</a>
 									<? if(\helpers\auth::check_right(\helpers\auth::GROUP_SUPER_ADMIN) && $s['client_id'] > 0) { ?>
-										<a class="btn btn-sm btn-danger delete_button" data-href="<?=\helpers\html::url('/ranges/range_delete/' . $s['id']) ?>" data-type="ajax" data-block="delete_<?=$s['id'] ?>" data-toggle="modal" data-target="#confirm-delete">
+										<a class="btn btn-sm btn-danger delete_button" data-href="<?=\helpers\html::url('/ranges/list_delete/' . $s['id']) ?>" data-type="ajax" data-block="delete_<?=$s['id'] ?>" data-toggle="modal" data-target="#confirm-delete">
 											<i class="fe fe-trash-2 mr-1" aria-hidden="true"></i>
 											<?=__('forms.delete')?>
 										</a>

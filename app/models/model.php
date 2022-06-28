@@ -144,19 +144,27 @@ class Model extends \Prefab{
 		return $this->db->exec($sql);
 	}
 
-	function insert_pdo(string $table, array $data, $update_key = 'id') {
-		$values = $sql_vals = [];
+	function insert_batch_pdo(string $table, array $keys, array $data, $update_key = 'id') {
+		$params = $nodes = $values = [];
 
-		foreach ($data as $key => $val) {
-			$values[] = "$key =:$key ";
-			$sql_vals[':' . $key] = $val;
+		foreach ($data as $id => $val) {
+			foreach ($val as $i => $v) {
+				$params[':v' . $id . '_' . $i] = $v;
+				$values[] = ':v' . $id . '_' . $i;
+			}
+			$nodes[] = '(' . implode(',', $values) . ')';
+			$values = [];
+
 		}
+		$_keys = implode(',', $this->escape_title($keys));
 
-		$sql = "insert into {$table} set ".  implode(',', $values) . " ON DUPLICATE KEY UPDATE {$update_key}={$update_key}";
-
+		$sql = ("INSERT INTO `{$table}` ({$_keys}) VALUE "
+			. implode(',', $nodes)
+			. " ON DUPLICATE KEY UPDATE {$update_key}={$update_key}"
+		);
 		$this->log['sql'] = $sql;
-
-		return !empty($sql_vals) ? $this->db->exec($sql, $sql_vals) : false;
+		$this->log['insert_count'] = count($values);
+		return $this->db->exec($sql, $params);
 	}
 
 	public function map_id($array, $id_to_map = 'id') {

@@ -1,0 +1,96 @@
+<form method="post" enctype="multipart/form-data">
+	<div class="card">
+		<div class="card-body">
+			<h5 class="mb-4">
+				<strong><?=$page_title?></strong>
+			</h5>
+			<div>
+				<div class="row">
+					<div class="form-group col-md-2">
+						<label>Name</label>
+						<div class="input-group date">
+							<input name="name" value="<?=$data['name']?>" type="text" class="form-control" required />
+						</div>
+					</div>
+					<div class="form-group col-sm-2">
+						<label>Partner</label>
+						<div class="input-group date">
+							<select name="partner_id" class="form-control" id="partner_id" required>
+								<option selected disabled value=""><?=__('forms.choose'); ?></option>
+								<? foreach ($app->get('partners') as $id => $val) { ?>
+									<option value="<?=$id?>" <?=$data['partner_id'] == $id ? 'selected' : '' ?>>
+										<?=$val?>
+									</option>
+								<? } ?>
+							</select>
+						</div>
+					</div>
+					<div class="form-group col-sm-2">
+						<label>Country</label>
+						<div class="input-group date">
+							<select name="country_id" class="form-control" id="country_id" required>
+								<option selected disabled value=""><?=__('forms.choose'); ?></option>
+								<? foreach ($countries as $id => $val) { ?>
+									<option value="<?=$id?>" <?=$country_id == $id ? 'selected' : '' ?>>
+										<?=$val?>
+									</option>
+								<? } ?>
+							</select>
+						</div>
+					</div>
+					<div class="form-group col-md-2">
+						<label><?=__('main.status'); ?></label>
+						<div class="input-group">
+							<div class="btn-group" data-toggle="buttons">
+								<label class="btn btn-outline-success">
+									<input type="radio" name="status" value="1" <?=$data['status'] ? 'checked="true"' : ''; ?>><strong><?=__('main.on'); ?></strong></label>
+								<label class="btn btn-outline-danger">
+									<input type="radio" name="status" value="0" <?=$data['status'] == 0 ? 'checked="true"' : ''; ?>><strong><?=__('main.off'); ?></strong></label>
+							</div>
+						</div>
+					</div>
+				</div>
+				<? if($add === true) { ?>
+					<div class="row">
+						<div class="form-group col-md-6" >
+							<label>One number per line</label>
+							<textarea class="form-control" name="number_list" rows="6" required></textarea>
+						</div>
+					</div>
+				<? } ?>
+				<div class="row">
+					<div class="form-group col-sm-2">
+						<div id="country">
+							<button class="btn btn-primary" id="bt_ranges" type="submit">Save</button>
+						</div>
+					</div>
+				</div>
+			</div>
+
+			<div>
+				<? if(!empty($numbers)) { ?>
+					<table class="table">
+						<thead class="thead-default">
+						<tr>
+							<th>#</th>
+							<th>Number</th>
+							<th>Status</th>
+						</tr>
+						</thead>
+						<? $i = 1?>
+						<? foreach ($numbers as $n) { ?>
+							<tr>
+								<td><?=$i++ ?></td>
+								<td><?=$n['number'] ?></td>
+								<td><?=$n['status'] == 0 ? 'used' : 'not used' ?></td>
+							</tr>
+						<? } ?>
+						</tbody>
+					</table>
+				<? } else { ?>
+					<div>No numbers in the list</div>
+				<? } ?>
+			</div>
+		</div>
+	</div>
+</form>

@@ -20,6 +20,7 @@ class ranges extends \controllers\Controller {
 		$page = false;
 
 		$this->add_main_button('Add Range', '/ranges/ranges_create');
+		$this->add_main_button('Add List', '/ranges/list_create');
 		$this->add_breadcrumb();
 		$ranges_model = new \ranges_model();
 
@@ -106,6 +107,89 @@ class ranges extends \controllers\Controller {
 			'page_title' => $page_title,
 			'toast_message' => $toast_message,
 			'countries' => $this->app->get('countries'),
+			'add' => $add,
+		]);
+
+		$this->render();
+	}
+
+	public function list_create(\Base $app, $params) {
+		$this->list_edit(true);
+	}
+
+	public function list_edit($add) {
+		$app = \Base::instance();
+
+		$this->add_breadcrumb();
+
+		if($app->get('GET.message') == 'created')
+			$toast_message = __('mess.created');
+
+		$params = $app->get('PARAMS');
+
+		$ranges_model = new \ranges_model();
+
+		$page_title = 'Add list number';
+		$bread = 'Add list';
+
+		if($add !== true) {
+			if (($id = (int) $params['param1']) > 0)
+				$ranges_model->model_number_list_groups->load(['id=?', $id]);
+			else
+				$this->render_error(500);
+
+			$page_title = 'Edit list: ' . $ranges_model->model_number_list_groups->name;
+			$bread = 'Edit list';
+
+			if (!$ranges_model->model_number_list_groups->loaded())
+				$error = ___('title.not_found');
+		}
+
+		if ($app->get('SERVER.REQUEST_METHOD') == 'POST' && !$error) {
+
+			if ($app->get('POST.partner_id') > 0 && $app->get('POST.country_id') > 0 && $app->get('POST.name')) {
+				$ranges_model->model_number_list_groups->name = $app->get('POST.name');
+				$ranges_model->model_number_list_groups->status = validate::filter('0/1', $app->get('POST.status')) ? : 0;
+				$ranges_model->model_number_list_groups->partner_id = validate::filter('int', $app->get('POST.partner_id')) ?: 0;
+				$country_id = validate::filter('int', $app->get('POST.country_id')) ?: 0;
+
+				$ranges_model->model_number_list_groups->save();
+
+				if($add === true && $ranges_model->model_number_list_groups->id) {
+					if($number_list = $app->get('POST.number_list'))
+						$number_list_arr = explode(PHP_EOL, $number_list);
+
+					if(!empty($number_list_arr)) {
+						$numbers_arr = validate::filter_array('int_no_zero', $number_list_arr);
+						$ranges_model->list_add_numbers($numbers_arr, $ranges_model->model_number_list_groups->id, $country_id);
+					}
+
+				}
+
+				if($add === true && !$error)
+					$app->reroute(\helpers\html::url('/ranges/list_edit/' . $ranges_model->model_number_list_groups->id . '?message=created'));
+				$toast_message = ___('mess.saved');
+			}
+			else
+				$error = 'Fill all fields';
+
+			$this->add_breadcrumb($bread);
+
+		}
+
+		$numbers = $ranges_model->get_list_numbers($id);
+		if(!empty($numbers[0]))
+			$country_id = $numbers[0]['country_id'];
+
+		$app->mset([
+			'content' => 'list_edit.html',
+			'error' => $error,
+			'page_title' => $page_title,
+			'toast_message' => $toast_message,
+			'countries' => $this->app->get('countries'),
+			'country_id' => $country_id,
+			'numbers' => $numbers,
+			'data' => $ranges_model->model_number_list_groups->cast(),
 			'add' => $add,
 		]);
 
