@@ -100,13 +100,15 @@ class stats extends \controllers\Controller {
 		$numbers = $app->db->exec("SELECT *, req.date as req_date, n.date as origin_date from otp_numbers as n left join otp_number_requests as req on req.number_id = n.id left join otp_ranges as ran on ran.id = n.range_id {$str_params} order by n.id desc, req.id desc limit :limit;", $pdo_params);
 		$ranges = arr::map_key_val(\ranges_model::instance()->get_ranges(), 'short_code', 'partner_id');
 
+		$partners = $app->get('partners');
+		$countries = $app->get('countries');
+
 		for ($i = 0; $i < count($numbers); $i++) {
 //			$country = $this->universal_phone_code_searcher($numbers[$i]['number'], $ranges);
-			$numbers[$i]['partner'] = $app->exists('partners.' . $numbers[$i]['partner_id']) ? $app->get('partners.' . $numbers[$i]['partner_id']) : 'partner id not found: ' . $numbers[$i]['partner_id'];
-			$numbers[$i]['country'] = $app->exists('countries.' . $numbers[$i]['country_id']) ? $app->get('countries.' . $numbers[$i]['country_id']) : '';
+			$numbers[$i]['partner'] = $partners[$numbers[$i]['partner_id']] ?: 'partner id not found: ' . $numbers[$i]['partner_id'];
+			$numbers[$i]['country'] = $countries[$numbers[$i]['country_id']] ?: '';
 		}
 
-		$partners = $app->get('partners');
 		$partners[0] = 'All';
 
 		$app->mset([
