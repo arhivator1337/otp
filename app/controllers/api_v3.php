@@ -40,7 +40,7 @@ class api_v3 extends api_v2 {
 		unset($req[0], $req[1], $req[2]);
 
 		if(!empty($api_key) && !in_array($api_key, $this->app->get('api_keys_v3_only')))
-			$this->error('wrong api key');
+			$this-> error('wrong api key');
 
 		if(!in_array($req[3], get_class_methods($this)))
 			$this->error('requested method not found');
@@ -170,6 +170,107 @@ class api_v3 extends api_v2 {
 
 	}
 
+	public function get_data_list() {
+		$ranges_model = new \ranges_model();
+		$numbers_model = new \numbers_model();
+		$group_id = (int) $this->app->get('PARAMS.param2') ;
+		if(!($group_id > 0))
+			$error = 'wrong id';
+
+		$settings = $this->import_client_settings($this->client_id);
+
+		$ranges = [];
+		if(!$error) {
+			$ranges = $ranges_model->get_number_list(1, null, null, 1, 0, $group_id);
+
+			if(count($ranges) == 0) {
+				$error = 'no ranges';
+				$this->message->add('generation_error', __function__, 'api_v2 no active ranges');
+			}
+			else  {
+				$random = $ranges[mt_rand(0, count($ranges) - 1)];
+
+				if(!empty($ranges))
+					$generated = array_merge($random, ['type' => 2, 'country_id' => $random['country_id']]);
+
+				if(empty($generated))
+					$this->message->add('generation_error', __function__, 'api_v2 number generation');
+			}
+
+			if($this->app->get('api_v3_proxy_on')) {
+				$proxy = $this->get_proxy($generated['country_id']);
+				if ($proxy['error']) {
+					$error = $proxy['error'];
+					$this->message->add('proxy_error', __function__, 'api_v2 proxy generation', print_r($proxy, 1));
+				}
+			}
+		}
+
+		if(!$error) {
+//			$names = new \controllers\system\name_generator();
+
+//			if(!($tier = $this->app->get('name_country_group')[$generated['country_id']])) //['group'];
+//				$this->message->add('generation_error', __function__, 'country_id:' . $generated['country_id'] . ' has no name_country_group');
+//
+
+//			$name = $names->generate_name($tier, 'all', 1)[0];
+//			$name_arr = explode(' ', $name);
+//
+//
+//			$nickname = $names->generate_nickname(1, $name_arr[mt_rand(0,1)])[0];
+//			$user_agent = $names->generate_user_agents();
+//			$data = [
+//				'number' => '+' . $generated['number'],
+//				'number_country' => $this->app->get('countries_code')[$generated['country_id']],
+//				'name' => $name,
+//				'nickname' => $nickname . $this->random_int(2),
+//				'nickname2' => $nickname . $this->random_int(3),
+//				'user_agent' => $user_agent,
+//				'requests_limit' => 1,
+//			];
+
+			$extra = [];
+//
+//			if($this->app->get('api_v3_proxy_on')) {
+//				$data = array_merge($data, [
+//					'proxy' => "{$proxy['login']}:{$proxy['pass']}@{$proxy['ip']}:{$proxy['port']}",
+//					'proxy_country' => $proxy['countryCode'],
+//					'proxy_city' => $proxy['city'],
+//					'proxy_timezone' => $proxy['timezone'],
+//				]);
+//
+//				$extra = [
+//					'proxy_is_mobile' => $proxy['mobile'],
+//					'proxy_is_proxy' => $proxy['proxy'],
+//					'proxy_is_hosting' => $proxy['hosting'],
+//				];
+//			}
+
+			$number_id = $numbers_model->save_number($generated['number'], $generated['range_id'], $generated['type']);
+			$user_agent = $name = $tier = $nickname = '';
+			(new \numbers_data_model())->save_number_data($number_id, $proxy['id'], $proxy['query']?:'', $proxy['countryCode']?:'', $user_agent, "{$name} ({$tier})", $nickname, serialize($extra));
+
+			$data = [
+				'number' => '+' . $generated['number'],
+			];
+			$data['transaction_id'] = $number_id;
+
+			if($generated['type'] == 2) //list
+				$ranges_model->update_number_from_list($generated['number_id'], 0);
+
+			$this->profiler();
+
+			$this->log('get_number: ' . '+' . print_r($data, 1));
+
+			$this->answer(true, $data);
+		}
+		else {
+			$this->answer(false, ['error' => $error]);
+		}
+
+	}
+
+
 	protected function get_proxy($country_id = false) {
 		$proxy_data = [];
 		$proxy = $this->load_proxy($country_id);
@@ -295,7 +396,7 @@ class api_v3 extends api_v2 {
 			if($status)
 				echo "ACCESS_NUMBER:{$data['transaction_id']}:{$data['number']}";
 			else
-				echo "NO_NUMBERS";
+				echo "ERROR:" . $data['error'];
 		}
 		$this->__desctruct();
 	}

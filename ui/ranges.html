@@ -65,8 +65,9 @@
 					</tr>
 					</thead>
 					<? foreach ($data_list_groups as $s) { $i++ ?>
+
 						<tr>
-							<td><?=$i ?></td>
+							<td><?=$s['id'] ?></td>
 							<td><?=$app->get('partners.' . $s['partner_id']) ?></td>
 							<td><?=$s['name'] ?></td>
 							<td><strong><?=$data_list_stats[$s['id']][1]['total']?:0 ?> </strong> / <?=$data_list_stats[$s['id']][0]['total']?:0 ?> </td>
