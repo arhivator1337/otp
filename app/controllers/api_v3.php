@@ -181,10 +181,10 @@ class api_v3 extends api_v2 {
 
 		$ranges = [];
 		if(!$error) {
-			$ranges = $ranges_model->get_number_list(0, null, null, 1, 0, $group_id);
+			$ranges = $ranges_model->get_number_list([0,1], null, null, 1, 0, $group_id);
 
 			if(count($ranges) == 0) {
-				$error = 'no ranges';
+				$error = 'no range';
 				$this->message->add('generation_error', __function__, 'api_v2 no active ranges');
 			}
 			else  {
