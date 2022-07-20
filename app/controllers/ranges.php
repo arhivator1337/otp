@@ -19,7 +19,7 @@ class ranges extends \controllers\Controller {
 	public function index(\Base $app, $param) {
 		$page = false;
 
-		$this->add_main_button('Add Range', '/ranges/ranges_create');
+		$this->add_main_button('Add Range', '/ranges/range_create');
 		$this->add_main_button('Add List', '/ranges/list_create');
 		$this->add_breadcrumb();
 		$ranges_model = new \ranges_model();
@@ -155,7 +155,7 @@ class ranges extends \controllers\Controller {
 
 				$ranges_model->model_number_list_groups->save();
 
-				if($add === true && $ranges_model->model_number_list_groups->id) {
+				if($ranges_model->model_number_list_groups->id) {
 					if($number_list = $app->get('POST.number_list'))
 						$number_list_arr = explode(PHP_EOL, $number_list);
 
@@ -177,9 +177,12 @@ class ranges extends \controllers\Controller {
 
 		}
 
-		$numbers = $ranges_model->get_list_numbers($id);
-		if(!empty($numbers[0]))
-			$country_id = $numbers[0]['country_id'];
+		if($add !== true) {
+			//in case you added new numbers and you want to see them without a reload
+			$numbers = $ranges_model->get_list_numbers($id);
+			if (!empty($numbers[0]))
+				$country_id = $numbers[0]['country_id'];
+		}
 
 		$app->mset([
 			'content' => 'list_edit.html',
