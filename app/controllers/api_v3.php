@@ -13,6 +13,9 @@ class api_v3 extends api_v2 {
 
 	private $api_response_type = ['json', 'serialize', 'hquery', 'droid'];
 
+	public $db_numbers = 'otp_numbers';
+	public $db_number_requests = 'otp_number_requests';
+
 	public function __construct($cli = false) {
 		if($cli === true)
 			return false;

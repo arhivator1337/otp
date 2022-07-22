@@ -30,4 +30,4 @@ class app extends prefab {
 	}
 }
 
-return app::instance($base_dir ?: false);
+return app::instance($base_dir ?: false, $connect_sql?: false);
