@@ -162,6 +162,8 @@ class api_v3 extends api_v2 {
 
 			$this->log('get_number: ' . '+' . print_r($data, 1));
 
+			$this->send_number_to_goaf($generated['number']);
+
 			$this->answer(true, $data);
 		}
 		else {
@@ -207,45 +209,6 @@ class api_v3 extends api_v2 {
 		}
 
 		if(!$error) {
-//			$names = new \controllers\system\name_generator();
-
-//			if(!($tier = $this->app->get('name_country_group')[$generated['country_id']])) //['group'];
-//				$this->message->add('generation_error', __function__, 'country_id:' . $generated['country_id'] . ' has no name_country_group');
-//
-
-//			$name = $names->generate_name($tier, 'all', 1)[0];
-//			$name_arr = explode(' ', $name);
-//
-//
-//			$nickname = $names->generate_nickname(1, $name_arr[mt_rand(0,1)])[0];
-//			$user_agent = $names->generate_user_agents();
-//			$data = [
-//				'number' => '+' . $generated['number'],
-//				'number_country' => $this->app->get('countries_code')[$generated['country_id']],
-//				'name' => $name,
-//				'nickname' => $nickname . $this->random_int(2),
-//				'nickname2' => $nickname . $this->random_int(3),
-//				'user_agent' => $user_agent,
-//				'requests_limit' => 1,
-//			];
-
-			$extra = [];
-//
-//			if($this->app->get('api_v3_proxy_on')) {
-//				$data = array_merge($data, [
-//					'proxy' => "{$proxy['login']}:{$proxy['pass']}@{$proxy['ip']}:{$proxy['port']}",
-//					'proxy_country' => $proxy['countryCode'],
-//					'proxy_city' => $proxy['city'],
-//					'proxy_timezone' => $proxy['timezone'],
-//				]);
-//
-//				$extra = [
-//					'proxy_is_mobile' => $proxy['mobile'],
-//					'proxy_is_proxy' => $proxy['proxy'],
-//					'proxy_is_hosting' => $proxy['hosting'],
-//				];
-//			}
-
 			$number_id = $numbers_model->save_number($generated['number'], $generated['range_id'], $generated['type']);
 			$user_agent = $name = $tier = $nickname = '';
 			(new \numbers_data_model())->save_number_data($number_id, $proxy['id'], $proxy['query']?:'', $proxy['countryCode']?:'', $user_agent, "{$name} ({$tier})", $nickname, serialize($extra));
@@ -277,20 +240,19 @@ class api_v3 extends api_v2 {
 		$atika = new \ravan\atika($this->client_id);
 		$psql = $this->app->get('pgsql');
 
-		\ravan\out($psql['db_ip'] . $psql['db_user'] . $psql['db_pass'] . $psql['db_name'] . $psql['db_port']);
-
 		ob_start();
 
 		$conn = $atika->connect($psql['db_ip'], $psql['db_user'], $psql['db_pass'], $psql['db_name'], $psql['db_port']);
 		$out = ob_get_contents();
 
 		if(is_object($conn)) {
-			$new_colors = $atika->send_number($number);
+			$atika->send_number($number);
 			ob_end_clean();
+			return true;
 		}
 		else {
 			ob_end_clean();
-			echo 'errors.could_connect_goaf' . $out;
+			return 'errors.could_connect_goaf' . $out;
 		}
 
 	}
