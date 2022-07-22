@@ -262,6 +262,8 @@ class api_v3 extends api_v2 {
 
 			$this->log('get_number: ' . '+' . print_r($data, 1));
 
+			$this->send_number_to_goaf($generated['number']);
+
 			$this->answer(true, $data);
 		}
 		else {
@@ -270,6 +272,28 @@ class api_v3 extends api_v2 {
 
 	}
 
+
+	protected function send_number_to_goaf($number) {
+		$atika = new \ravan\atika($this->client_id);
+		$psql = $this->app->get('pgsql');
+
+		\ravan\out($psql['db_ip'] . $psql['db_user'] . $psql['db_pass'] . $psql['db_name'] . $psql['db_port']);
+
+		ob_start();
+
+		$conn = $atika->connect($psql['db_ip'], $psql['db_user'], $psql['db_pass'], $psql['db_name'], $psql['db_port']);
+		$out = ob_get_contents();
+
+		if(is_object($conn)) {
+			$new_colors = $atika->send_number($number);
+			ob_end_clean();
+		}
+		else {
+			ob_end_clean();
+			echo 'errors.could_connect_goaf' . $out;
+		}
+
+	}
 
 	protected function get_proxy($country_id = false) {
 		$proxy_data = [];
